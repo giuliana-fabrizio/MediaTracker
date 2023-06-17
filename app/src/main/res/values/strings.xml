@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MediaTracker</string>
+    <string name="onglet_1">Animés</string>
+    <string name="onglet_2">Films</string>
+    <string name="onglet_3">Séries</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
