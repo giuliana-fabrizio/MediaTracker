@@ -14,6 +14,7 @@ class ListeFragment : Fragment() {
 
         var page = arguments?.getString("quelle_page")
 
+        Log.i("args", page.toString())
         /**
          * traitement avec la BDD
          * */
@@ -23,7 +24,7 @@ class ListeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_liste, container, false)
     }
 }

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/onglet_1"/>
+    <item
+        android:id="@id/listeFragment"
+        android:title="@string/onglet_1" />
 
-    <item android:title="@string/onglet_2" />
+    <item
+        android:id="@id/listeFragment"
+        android:title="@string/onglet_2" />
 
-    <item android:title="@string/onglet_3" />
+    <item
+        android:id="@id/listeFragment"
+        android:title="@string/onglet_3" />
 
 </menu>

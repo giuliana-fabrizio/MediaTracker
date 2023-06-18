@@ -21,16 +21,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/listeFragment"
+        android:name="com.example.mediatracker.ListeFragment"
+        android:label="Liste"
+        tools:layout="@layout/fragment_liste">
+        <action
+            android:id="@+id/id_action_liste_detail"
+            app:destination="@id/listeFragment">
+            <argument
+                android:name="id_media"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.mediatracker.DetailFragment"
         android:label="Detail"
         tools:layout="@layout/fragment_detail" />
-
-    <fragment
-        android:id="@+id/listeFragment"
-        android:name="com.example.mediatracker.ListeFragment"
-        android:label="Liste"
-        tools:layout="@layout/fragment_liste" />
-
 
 </navigation>
