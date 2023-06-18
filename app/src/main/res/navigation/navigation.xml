@@ -15,7 +15,7 @@
             android:id="@+id/id_action_accueil_liste"
             app:destination="@id/listeFragment">
             <argument
-                android:name="quelle_page"
+                android:name="media"
                 app:argType="string" />
         </action>
     </fragment>
@@ -27,7 +27,49 @@
         tools:layout="@layout/fragment_liste">
         <action
             android:id="@+id/id_action_liste_detail"
-            app:destination="@id/listeFragment">
+            app:destination="@id/detailFragment">
+            <argument
+                android:name="id_media"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/animesFragment"
+        android:name="com.example.mediatracker.ListeFragment"
+        android:label="@string/onglet_1"
+        tools:layout="@layout/fragment_liste">
+        <action
+            android:id="@+id/id_action_liste_detail"
+            app:destination="@id/detailFragment">
+            <argument
+                android:name="id_media"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/filmsFragment"
+        android:name="com.example.mediatracker.ListeFragment"
+        android:label="@string/onglet_2"
+        tools:layout="@layout/fragment_liste">
+        <action
+            android:id="@+id/id_action_liste_detail"
+            app:destination="@id/detailFragment">
+            <argument
+                android:name="id_media"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/seriesFragment"
+        android:name="com.example.mediatracker.ListeFragment"
+        android:label="@string/onglet_3"
+        tools:layout="@layout/fragment_liste">
+        <action
+            android:id="@+id/id_action_liste_detail"
+            app:destination="@id/detailFragment">
             <argument
                 android:name="id_media"
                 app:argType="string" />
