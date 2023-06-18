@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import android.widget.Button
+import androidx.core.os.bundleOf
 
 class AccueilFragment : Fragment() {
 
@@ -22,12 +23,35 @@ class AccueilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var btn_onglet_1 = view.findViewById<Button>(R.id.id_btn_onglet_1)
-        var btn_onglet_2 = view.findViewById<Button>(R.id.id_btn_onglet_2)
-        var btn_onglet_3 = view.findViewById<Button>(R.id.id_btn_onglet_3)
+        var btnOnglet1 = view.findViewById<Button>(R.id.id_btn_onglet_1)
+        var btnOnglet2 = view.findViewById<Button>(R.id.id_btn_onglet_2)
+        var btnOnglet3 = view.findViewById<Button>(R.id.id_btn_onglet_3)
 
-        btn_onglet_1.setOnClickListener {
-            Log.i("", "tata")
+        btnOnglet1.setOnClickListener {
+            view.findNavController().navigate(
+                R.id.id_action_accueil_liste,
+                bundleOf(
+                    "quelle_page" to "animes"
+                )
+            )
+        }
+
+        btnOnglet2.setOnClickListener {
+            view.findNavController().navigate(
+                R.id.id_action_accueil_liste,
+                bundleOf(
+                    "quelle_page" to "films"
+                )
+            )
+        }
+
+        btnOnglet3.setOnClickListener {
+            view.findNavController().navigate(
+                R.id.id_action_accueil_liste,
+                bundleOf(
+                    "quelle_page" to "series"
+                )
+            )
         }
     }
 }

@@ -10,12 +10,27 @@
         android:id="@+id/accueilFragment"
         android:name="com.example.mediatracker.AccueilFragment"
         android:label="Accueil"
-        tools:layout="@layout/fragment_accueil" />
+        tools:layout="@layout/fragment_accueil">
+        <action
+            android:id="@+id/id_action_accueil_liste"
+            app:destination="@id/listeFragment">
+            <argument
+                android:name="quelle_page"
+                app:argType="string" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.mediatracker.DetailFragment"
         android:label="Detail"
         tools:layout="@layout/fragment_detail" />
+
+    <fragment
+        android:id="@+id/listeFragment"
+        android:name="com.example.mediatracker.ListeFragment"
+        android:label="Liste"
+        tools:layout="@layout/fragment_liste" />
+
 
 </navigation>
