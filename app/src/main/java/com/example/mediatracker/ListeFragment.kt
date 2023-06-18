@@ -18,6 +18,8 @@ class ListeFragment : Fragment() {
         /**
          * traitement avec la BDD
          * */
+
+
     }
 
     override fun onCreateView(
