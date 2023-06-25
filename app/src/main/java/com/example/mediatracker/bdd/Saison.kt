@@ -7,3 +7,8 @@ import androidx.room.*
 data class Saison(
     @PrimaryKey (autoGenerate = false) val num_saison: Int
 )
+
+@Dao
+interface SaisonDao {
+
+}
