@@ -3,4 +3,11 @@
     <string name="onglet_1">Animés</string>
     <string name="onglet_2">Films</string>
     <string name="onglet_3">Séries</string>
+    <string name="label_vide">Vide</string>
+
+<!-- =============================================================================================== statut -->
+    <string name="statut_1">A commencer</string>
+    <string name="statut_2">En cours</string>
+    <string name="statut_3">En pause</string>
+    <string name="statut_4">Terminé</string>
 </resources>

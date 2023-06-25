@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/listeFragment"
         android:name="com.example.mediatracker.ListeFragment"
-        android:label="Liste"
+        android:label="@string/label_vide"
         tools:layout="@layout/fragment_liste">
         <action
             android:id="@+id/id_action_liste_detail"
