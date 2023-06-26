@@ -10,5 +10,12 @@ data class Saison(
 
 @Dao
 interface SaisonDao {
+    @Query("SELECT * FROM saison")
+    fun getAll(): List<Saison>
 
+    @Insert
+    fun insert(saison: Saison)
+
+    @Query("DELETE FROM saison")
+    fun deleteTable()
 }

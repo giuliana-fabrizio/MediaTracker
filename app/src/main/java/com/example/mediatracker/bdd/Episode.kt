@@ -19,14 +19,12 @@ data class Episode(
 @Dao
 interface EpisodeDao {
 
-    @Query(
-        "SELECT * FROM episode"
-    )
+    @Query("SELECT * FROM episode")
     fun getAll(): List<Episode>
 
     @Insert
     fun insert(episode: Episode)
 
-    @Query("DELETE FROM Episode")
+    @Query("DELETE FROM episode")
     fun deleteTable()
 }

@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mediatracker.bdd.Media
 import com.example.mediatracker.bdd.MediaDao
 
@@ -22,7 +23,6 @@ class ListeFragment : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.title = page.toString()
 
         mediaDao = MainActivity.db.mediaDao()
-
         medias = mediaDao.getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
     }
 
@@ -37,8 +37,7 @@ class ListeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var textView: TextView = view.findViewById(R.id.todo_test)
-        textView.text = medias.toString()
-        Log.i("database successfully", medias.toString())
+        val recyclerView : RecyclerView = view.findViewById(R.id.id_recyclerview_liste)
+        recyclerView.adapter = ListeAdaptateur(medias, this)
     }
 }

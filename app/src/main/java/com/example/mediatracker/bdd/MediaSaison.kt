@@ -1,9 +1,6 @@
 package com.example.mediatracker.bdd
 
-import androidx.room.Dao
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     primaryKeys = ["mediaId", "saisonNum"],
@@ -26,5 +23,9 @@ data class MediaSaison(
 
 @Dao
 interface MediaSaisonDao {
-    // Ajoutez vos méthodes DAO ici pour effectuer des opérations sur la table MediaSaison
+    @Insert
+    fun insert(mediaSaison: MediaSaison)
+
+    @Query("DELETE FROM mediaSaison")
+    fun deleteTable()
 }
