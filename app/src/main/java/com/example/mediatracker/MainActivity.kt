@@ -21,81 +21,109 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initializeDatabase() // Appel à la fonction d'initialisation de la base de données
+        insertData()
         super.onCreate(savedInstanceState)
 
-        val binding =
-            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         drawerLayout = binding.drawerLayout
-        navController = this.findNavController(R.id.navHostFragment)
+        navController = findNavController(R.id.navHostFragment)
         NavigationUI.setupWithNavController(binding.menuView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
+
+        Log.d("initializeDatabase", "Bob")
+        Log.d("insertData", "g,ksjgkgglglfgj,fslkd,gld")
+
+    }
+
+    private fun initializeDatabase() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "media_tracker_bdd"
         ).allowMainThreadQueries().build()
 
-// ================================================================================================= insert
+        Log.d("MainActivity", "Database initialized successfully")
+    }
 
-        db.categorieDao().deleteTable()
-        db.episodeDao().deleteTable()
-        db.mediaDao().deleteTable()
-        db.mediaSaisonDao().deleteTable()
-        db.saisonDao().deleteTable()
-        db.statutDao().deleteTable()
+    private fun insertData() {
+        db.runInTransaction {
+            db.categorieDao().apply {
+                deleteTable()
+                insert(Categorie(1, getString(R.string.onglet_1)))
+                insert(Categorie(2, getString(R.string.onglet_2)))
+                insert(Categorie(3, getString(R.string.onglet_3)))
+                Log.i("BDD", getAll().toString())
 
-        var categories: List<Categorie> = listOf(
-            Categorie(1, getString(R.string.onglet_1)),
-            Categorie(2, getString(R.string.onglet_2)),
-            Categorie(3, getString(R.string.onglet_3))
-        )
-        for (categorie: Categorie in categories)
-            db.categorieDao().insert(categorie)
+            }
 
-        Log.i("BDD", db.categorieDao().getAll().toString())
+            db.statutDao().apply {
+                deleteTable()
+                insert(Statut(1, getString(R.string.statut_1)))
+                insert(Statut(2, getString(R.string.statut_2)))
+                insert(Statut(3, getString(R.string.statut_3)))
+                insert(Statut(4, getString(R.string.statut_4)))
+            }
 
-        var statuts: List<Statut> = listOf(
-            Statut(1, getString(R.string.statut_1)),
-            Statut(2, getString(R.string.statut_2)),
-            Statut(3, getString(R.string.statut_3)),
-            Statut(4, getString(R.string.statut_4))
-        )
-        for (statut: Statut in statuts)
-            db.statutDao().insert(statut)
+            db.mediaDao().apply {
+                deleteTable()
+                insert(
+                    Media(
+                        1,
+                        "TUTU",
+                        "",
+                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "",
+                        1,
+                        1
+                    )
+                )
+                insert(
+                    Media(
+                        2,
+                        "TATA",
+                        "",
+                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        2,
+                        1
+                    )
+                )
+                insert(
+                    Media(
+                        3,
+                        "TOTO",
+                        "",
+                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "",
+                        1,
+                        4
+                    )
+                )
+                Log.i("BDD", getAll(getString(R.string.onglet_1)).toString())
+            }
 
-        var medias: List<Media> = listOf(
-            Media(1, "TUTU", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "", 1, 1),
-            Media(2, "TATA", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", 2, 1),
-            Media(3, "TOTO", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "", 1, 4)
-        )
-        for (media: Media in medias)
-            db.mediaDao().insert(media)
+            db.saisonDao().apply {
+                deleteTable()
+                insert(Saison(1))
+                insert(Saison(2))
+                insert(Saison(3))
+            }
 
-        Log.i("BDD", db.mediaDao().getAll(getString(R.string.onglet_1)).toString())
+            db.episodeDao().apply {
+                deleteTable()
+                insert(Episode(10, 1))
+                insert(Episode(50, 3))
+                insert(Episode(40, 2))
+            }
 
-        var saisons: List<Saison> = listOf(
-            Saison(1),
-            Saison(2),
-            Saison(3)
-        )
-        for (saison: Saison in saisons)
-            db.saisonDao().insert(saison)
-
-        var episodes: List<Episode> = listOf(
-            Episode(10, 1),
-            Episode(50, 3),
-            Episode(40, 2)
-        )
-        for (episode: Episode in episodes)
-            db.episodeDao().insert(episode)
-
-        var mediaSaisons: List<MediaSaison> = listOf(
-            MediaSaison(1, 1),
-            MediaSaison(2, 3),
-            MediaSaison(3, 2)
-        )
-        for (mediaSaison: MediaSaison in mediaSaisons)
-            db.mediaSaisonDao().insert(mediaSaison)
+            db.mediaSaisonDao().apply {
+                deleteTable()
+                insert(MediaSaison(1, 1))
+                insert(MediaSaison(2, 3))
+                insert(MediaSaison(3, 2))
+            }
+        }
     }
 }

@@ -28,16 +28,13 @@ class AccueilFragment : Fragment() {
             val indicator: TabLayout = rootView.findViewById(view.second)
 
             Log.i("tata", getString(view.third))
-            try {
                 val medias = db.mediaDao().getAll(getString(view.third))
                 val imageUrls = medias.map { res -> res.image }
 
                 val adapter = AccueilAdapter(this.context, imageUrls)
                 viewPager.adapter = adapter
                 indicator.setupWithViewPager(viewPager)
-            } catch (e : java.lang.Exception) {
-                Log.i("erreur", e.message.toString())
-            }
+
         }
         return rootView
     }
