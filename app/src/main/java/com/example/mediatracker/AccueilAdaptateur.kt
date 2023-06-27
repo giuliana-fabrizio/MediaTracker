@@ -23,10 +23,10 @@ class AccueilAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
-        val mLayoutInflater =
+        val layoutInflater =
             context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val itemView: View = mLayoutInflater.inflate(R.layout.item_accueil, container, false)
+        val itemView: View = layoutInflater.inflate(R.layout.item_accueil, container, false)
 
         val imageUrl = imageUrls[position]
 

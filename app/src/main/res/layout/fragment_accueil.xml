@@ -9,52 +9,52 @@
     tools:context=".MainActivity">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/id_viewPager_1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/indicator"
-        app:layout_constraintVertical_bias="0.5" />
+        android:layout_height="@dimen/heigth_carroussel_accueil"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/indicator"
+        android:id="@+id/id_indicator_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/viewPager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="@dimen/margin_top_indicateur_accueil"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/id_viewPager_1" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/id_viewPager_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/heigth_carroussel_accueil"
+        android:layout_marginTop="@dimen/margin_top_accueil"
+        app:layout_constraintTop_toBottomOf="@id/id_indicator_1"
+        tools:ignore="MissingConstraints" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/id_indicator_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_indicateur_accueil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_viewPager_2" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/id_viewPager_3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/heigth_carroussel_accueil"
+        android:layout_marginTop="@dimen/margin_top_accueil"
+        app:layout_constraintTop_toBottomOf="@id/id_indicator_2"
+        tools:ignore="MissingConstraints" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/id_indicator_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_indicateur_accueil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_viewPager_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-<!--    <Button-->
-<!--        android:id="@+id/id_btn_onglet_1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/taille_btn_accueil"-->
-<!--        android:layout_marginTop="@dimen/margin_accueil"-->
-<!--        android:text="@string/onglet_1"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/id_btn_onglet_2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/taille_btn_accueil"-->
-<!--        android:layout_marginTop="@dimen/padding_accueil"-->
-<!--        android:text="@string/onglet_2"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/id_btn_onglet_1"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/id_btn_onglet_3"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/taille_btn_accueil"-->
-<!--        android:layout_marginTop="@dimen/padding_accueil"-->
-<!--        android:text="@string/onglet_3"-->
-<!--        app:layout_constraintHeight=""-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/id_btn_onglet_2"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
