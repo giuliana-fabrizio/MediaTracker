@@ -19,6 +19,7 @@ data class Media(
     @PrimaryKey(autoGenerate = true) val id_media: Int,
     @ColumnInfo(name = "nom") val nom: String,
     @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "image") val image: String,
     @ColumnInfo(name = "lien") val lien: String,
     @ColumnInfo(name = "media_categorie") val media_categorie: Int,
     @ColumnInfo(name = "media_statut") val media_statut: Int,
@@ -43,12 +44,13 @@ interface MediaDao {
     fun update(media: Media)
 
     @Query(
-        "UPDATE media SET description = :newDescription, lien = :newLink, " +
+        "UPDATE media SET description = :newDescription, lien = :newLink, image = :newImg, " +
                 "nom = :newName WHERE nom = :lastName"
     )
     fun updateByName(
         newDescription: String,
         newLink: String,
+        newImg: String,
         newName: String,
         lastName: String
     )

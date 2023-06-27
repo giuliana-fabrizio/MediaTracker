@@ -2,7 +2,7 @@
 <resources>
     <dimen name="padding">10dp</dimen>
 
-    <dimen name="heigth_carroussel_accueil">100dp</dimen>
+    <dimen name="heigth_carroussel_accueil">150dp</dimen>
     <dimen name="margin_top_accueil">30dp</dimen>
     <dimen name="margin_top_indicateur_accueil">10dp</dimen>
 

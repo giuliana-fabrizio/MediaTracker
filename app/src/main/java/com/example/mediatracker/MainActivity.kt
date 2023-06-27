@@ -65,9 +65,9 @@ class MainActivity : AppCompatActivity() {
             db.statutDao().insert(statut)
 
         var medias: List<Media> = listOf(
-            Media(1, "TUTU", "", "", 1, 1),
-            Media(2, "TATA", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", 2, 1),
-            Media(3, "TOTO", "", "", 1, 4)
+            Media(1, "TUTU", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "", 1, 1),
+            Media(2, "TATA", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", 2, 1),
+            Media(3, "TOTO", "", "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1", "", 1, 4)
         )
         for (media: Media in medias)
             db.mediaDao().insert(media)

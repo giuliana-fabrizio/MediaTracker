@@ -38,8 +38,8 @@ class ListeAdaptateur(
     override fun onBindViewHolder(holder: ItemListeViewHolder, position: Int) {
 
         var media = medias[position]
-
-        Picasso.get().load(media.lien).into(holder.image)
+        if (media.image.length === 0) holder.image.visibility = View.INVISIBLE
+        else Picasso.get().load(media.image).into(holder.image)
 
         holder.textView.text = media.nom
 

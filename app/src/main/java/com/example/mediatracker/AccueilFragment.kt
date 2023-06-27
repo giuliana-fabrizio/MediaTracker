@@ -19,8 +19,8 @@ class AccueilFragment : Fragment() {
 
         var viewAccueil = listOf(
             Triple(R.id.id_viewPager_1, R.id.id_indicator_1, R.string.onglet_1),
-            Triple(R.id.id_viewPager_2, R.id.id_indicator_2, R.string.onglet_1),
-            Triple(R.id.id_viewPager_3, R.id.id_indicator_3, R.string.onglet_1)
+            Triple(R.id.id_viewPager_2, R.id.id_indicator_2, R.string.onglet_2),
+            Triple(R.id.id_viewPager_3, R.id.id_indicator_3, R.string.onglet_3)
         )
 
         for (view in viewAccueil) {
