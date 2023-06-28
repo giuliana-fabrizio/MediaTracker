@@ -2,7 +2,6 @@ package com.example.mediatracker
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +37,7 @@ class ListeAdaptateur(
     override fun onBindViewHolder(holder: ItemListeViewHolder, position: Int) {
 
         var media = medias[position]
+
         if (media.image.length === 0) holder.image.visibility = View.INVISIBLE
         else Picasso.get().load(media.image).into(holder.image)
 

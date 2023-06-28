@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 
 class AccueilAdapter(
-    private val context: Context?,
-    private val imageUrls: List<String>,
+    private val medias: List<Pair<Int, String>>,
+    private val fragment: AccueilFragment
 ) : PagerAdapter() {
 
     override fun getCount(): Int {
-        return imageUrls.size
+        return medias.size
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -24,16 +26,41 @@ class AccueilAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val layoutInflater =
-            context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            fragment.context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
+        val media = medias[position]
         val itemView: View = layoutInflater.inflate(R.layout.item_accueil, container, false)
+        val imageUrl = media.second
 
-        val imageUrl = imageUrls[position]
+        if (imageUrl.length > 0) {
+            val imageView: ImageView = itemView.findViewById(R.id.imageView)
+            Picasso.get().load(imageUrl).into(imageView)
+            container.addView(itemView)
 
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        Picasso.get().load(imageUrl).into(imageView)
-        container.addView(itemView)
+//            Toast.makeText(
+//                fragment.requireContext(),
+//                "Ta cliqué et ça marche truc de fou nan ?",
+//                Toast.LENGTH_SHORT
+//            ).show()
 
+            if (position == 0) {
+                imageView.setOnClickListener {
+                    Navigation.findNavController(fragment.view!!).navigate(
+                        R.id.id_action_accueil_liste,
+                        bundleOf( "media" to fragment.getString(media.first))
+                    )
+                }
+            } else {
+                imageView.setOnClickListener {
+                    Navigation.findNavController(fragment.view!!).navigate(
+                        R.id.id_action_accueil_detail,
+                        bundleOf(
+                            "id_media" to media.first.toString()
+                        )
+                    )
+                }
+            }
+        }
         return itemView
     }
 

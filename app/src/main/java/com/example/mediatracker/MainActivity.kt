@@ -2,7 +2,6 @@ package com.example.mediatracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -21,20 +20,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        initializeDatabase() // Appel à la fonction d'initialisation de la base de données
-        insertData()
         super.onCreate(savedInstanceState)
 
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        initializeDatabase()
+        insertData()
+
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         drawerLayout = binding.drawerLayout
-        navController = findNavController(R.id.navHostFragment)
+        navController = this.findNavController(R.id.navHostFragment)
         NavigationUI.setupWithNavController(binding.menuView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
-
-        Log.d("initializeDatabase", "Bob")
-        Log.d("insertData", "g,ksjgkgglglfgj,fslkd,gld")
 
     }
 
@@ -43,8 +40,6 @@ class MainActivity : AppCompatActivity() {
             applicationContext,
             AppDatabase::class.java, "media_tracker_bdd"
         ).allowMainThreadQueries().build()
-
-        Log.d("MainActivity", "Database initialized successfully")
     }
 
     private fun insertData() {
@@ -54,8 +49,6 @@ class MainActivity : AppCompatActivity() {
                 insert(Categorie(1, getString(R.string.onglet_1)))
                 insert(Categorie(2, getString(R.string.onglet_2)))
                 insert(Categorie(3, getString(R.string.onglet_3)))
-                Log.i("BDD", getAll().toString())
-
             }
 
             db.statutDao().apply {
@@ -73,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                         1,
                         "TUTU",
                         "",
-                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
                         "",
                         1,
                         1
@@ -84,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                         2,
                         "TATA",
                         "",
-                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "",
                         "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
                         2,
                         1
@@ -95,13 +88,12 @@ class MainActivity : AppCompatActivity() {
                         3,
                         "TOTO",
                         "",
-                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
+                        "https://i.pinimg.com/originals/cd/91/7f/cd917ffff15a31088e3b385399c84e96.jpg",
                         "",
                         1,
                         4
                     )
                 )
-                Log.i("BDD", getAll(getString(R.string.onglet_1)).toString())
             }
 
             db.saisonDao().apply {

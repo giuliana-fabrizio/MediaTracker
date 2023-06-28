@@ -6,13 +6,23 @@
     <string name="onglet_3">Séries</string>
     <string name="label_vide">Vide</string>
 
-<!-- =============================================================================================== statut -->
+    <string name="lien_img_onglet_1">
+        https://cdn.discordapp.com/attachments/893086747230089227/1123541773512347708/Animes_1.png
+    </string>
+    <string name="lien_img_onglet_2">
+        https://cdn.discordapp.com/attachments/893086747230089227/1123569561179000933/Films.png
+    </string>
+    <string name="lien_img_onglet_3">
+        https://cdn.discordapp.com/attachments/893086747230089227/1123568013120127006/img_series.png
+    </string>
+
+    <!-- =============================================================================================== statut -->
     <string name="statut_1">A commencer</string>
     <string name="statut_2">En cours</string>
     <string name="statut_3">En pause</string>
     <string name="statut_4">Terminé</string>
-    
-<!-- =============================================================================================== liste -->
+
+    <!-- =============================================================================================== liste -->
     <string name="btn_1">Site web</string>
     <string name="btn_2">Détail</string>
 </resources>

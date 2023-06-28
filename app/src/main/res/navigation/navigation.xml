@@ -18,6 +18,13 @@
                 android:name="media"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/id_action_accueil_detail"
+            app:destination="@id/detailFragment">
+            <argument
+                android:name="id_media"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
