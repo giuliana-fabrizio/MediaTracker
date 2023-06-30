@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding">10dp</dimen>
+    <dimen name="espacement">10dp</dimen>
 
     <dimen name="heigth_carroussel_accueil">180dp</dimen>
     <dimen name="margin_top_accueil">30dp</dimen>
     <dimen name="margin_top_indicateur_accueil">5dp</dimen>
 
+    <dimen name="taille_text_liste">20sp</dimen>
+
     <dimen name="taille_img_liste">100dp</dimen>
+    <dimen name="trait_taille">1dp</dimen>
 </resources>
