@@ -10,4 +10,6 @@
 
     <dimen name="taille_img_liste">100dp</dimen>
     <dimen name="trait_taille">1dp</dimen>
+
+    <dimen name="taille_text_modal">15dp</dimen>
 </resources>

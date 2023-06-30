@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/espacement">
+
+    <EditText
+        android:id="@+id/id_ajout_nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="Nom du média"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/id_label_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Description 🖋️"
+        android:textColor="@color/black"
+        android:textSize="@dimen/taille_text_modal"
+        app:layout_constraintTop_toBottomOf="@id/id_ajout_nom"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/id_ajout_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/id_label_description"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/id_label_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lien de l'image 🖼️"
+        android:textColor="@color/black"
+        android:textSize="@dimen/taille_text_modal"
+        app:layout_constraintTop_toBottomOf="@id/id_ajout_description"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/id_ajout_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        app:layout_constraintTop_toBottomOf="@id/id_label_image"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/id_label_lien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lien du média 🎥"
+        android:textColor="@color/black"
+        android:textSize="@dimen/taille_text_modal"
+        app:layout_constraintTop_toBottomOf="@id/id_ajout_image"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/id_ajout_episode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        app:layout_constraintTop_toBottomOf="@id/id_label_lien"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/id_btn_ajout_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Renseigner la date de sortie"
+        app:layout_constraintTop_toBottomOf="@id/id_ajout_episode"
+        tools:ignore="MissingConstraints" />
+
+    <CalendarView
+        android:id="@+id/id_ajout_date"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/id_btn_ajout_date"
+        tools:ignore="MissingConstraints" />
+
+    <Spinner
+        android:id="@+id/spinnerStatut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

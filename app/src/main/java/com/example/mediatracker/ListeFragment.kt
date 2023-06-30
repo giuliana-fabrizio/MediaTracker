@@ -3,6 +3,9 @@ package com.example.mediatracker
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.CalendarView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -51,33 +54,65 @@ class ListeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.id_liste_action_1 -> Log.i("tata", "Ajouter")
-            R.id.id_liste_action_2 -> {
-                val searchView = item.actionView as SearchView
+            R.id.id_liste_action_1 -> modal_ajouter()
 
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (query != null) {
-                            val filteredMedia = medias.filter { media ->
-                                media.nom.equals(query, true)
-                            }
-                            recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
-                        }
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        if (newText != null) {
-                            val filteredMedia = medias.filter { media ->
-                                media.nom.contains(newText, true)
-                            }
-                            recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
-                        }
-                        return true
-                    }
-                })
-            }
+            R.id.id_liste_action_2 -> rechercherParNom(item)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun modal_ajouter() {
+
+        val alert_dialog = AlertDialog.Builder(requireContext())
+
+        val inflater = LayoutInflater.from(requireContext())
+        val modal_ajout = inflater.inflate(R.layout.modal_ajout, null)
+        alert_dialog.setView(modal_ajout)
+
+        val btn_date: Button = modal_ajout.findViewById(R.id.id_btn_ajout_date)
+        btn_date.setOnClickListener {
+            Log.i("tata", "tata")
+            val calendarView: CalendarView = modal_ajout.findViewById(R.id.id_ajout_date)
+            Log.i("tata", calendarView.visibility.toString())
+            calendarView.visibility = View.VISIBLE
+            Log.i("tata", calendarView.visibility.toString())
+        }
+
+        alert_dialog.setPositiveButton("Valider ✅") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        alert_dialog.setNegativeButton("Annuler ❌") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val modal = alert_dialog.create()
+        modal.show()
+    }
+
+    private fun rechercherParNom(item: MenuItem) {
+        val searchView = item.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    val filteredMedia = medias.filter { media ->
+                        media.nom.equals(query, true)
+                    }
+                    recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    val filteredMedia = medias.filter { media ->
+                        media.nom.contains(newText, true)
+                    }
+                    recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
+                }
+                return true
+            }
+        })
     }
 }
