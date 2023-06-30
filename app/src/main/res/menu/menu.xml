@@ -4,14 +4,17 @@
 
     <item
         android:id="@id/animesFragment"
+        android:icon="@drawable/icon_animes"
         android:title="@string/onglet_1" />
 
     <item
         android:id="@id/filmsFragment"
+        android:icon="@drawable/icon_films"
         android:title="@string/onglet_2" />
 
     <item
         android:id="@id/seriesFragment"
+        android:icon="@drawable/icon_series"
         android:title="@string/onglet_3" />
 
 </menu>
