@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         navController = this.findNavController(R.id.navHostFragment)
         NavigationUI.setupWithNavController(binding.menuView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
     private fun initializeDatabase() {

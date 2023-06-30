@@ -34,9 +34,6 @@ interface MediaDao {
     )
     fun getAll(categorie: String): List<Media>
 
-    @Query("SELECT * FROM media WHERE nom LIKE :nom_media")
-    fun findByName(nom_media: String): Media
-
     @Insert
     fun insert(media: Media)
 

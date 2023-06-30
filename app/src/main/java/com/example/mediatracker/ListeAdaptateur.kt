@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mediatracker.bdd.Media
 import com.squareup.picasso.Picasso
@@ -42,6 +44,14 @@ class ListeAdaptateur(
         else Picasso.get().load(media.image).into(holder.image)
 
         holder.textView.text = media.nom
+
+        holder.btn_page_detail.setOnClickListener {
+            Navigation.findNavController(fragment.view!!)
+                .navigate(
+                    R.id.id_action_liste_detail,
+                    bundleOf("id_media" to media.id_media.toString())
+                )
+        }
 
         holder.btn_site_web.setOnClickListener {
             val url = media.lien
