@@ -1,10 +1,8 @@
 package com.example.mediatracker
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.CalendarView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -57,36 +55,47 @@ class ListeFragment : Fragment() {
             R.id.id_liste_action_1 -> modal_ajouter()
 
             R.id.id_liste_action_2 -> rechercherParNom(item)
+
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun modal_ajouter() {
-
-        val alert_dialog = AlertDialog.Builder(requireContext())
-
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
-        val modal_ajout = inflater.inflate(R.layout.modal_ajout, null)
-        alert_dialog.setView(modal_ajout)
+        val modalAjout = inflater.inflate(R.layout.modal_ajout, null)
+        alertDialogBuilder.setView(modalAjout)
 
-        val btn_date: Button = modal_ajout.findViewById(R.id.id_btn_ajout_date)
-        btn_date.setOnClickListener {
-            Log.i("tata", "tata")
-            val calendarView: CalendarView = modal_ajout.findViewById(R.id.id_ajout_date)
-            Log.i("tata", calendarView.visibility.toString())
-            calendarView.visibility = View.VISIBLE
-            Log.i("tata", calendarView.visibility.toString())
+        val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
+        val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
+        val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
+        val spinnerStatut: Spinner = modalAjout.findViewById(R.id.spinnerStatut)
+
+        calendarView.visibility = View.GONE
+        btnDate.setOnClickListener {
+            calendarView.visibility = if (calendarView.visibility == View.GONE) View.VISIBLE else View.GONE
         }
 
-        alert_dialog.setPositiveButton("Valider ✅") { dialog, which ->
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+            dateSelectionneeTextView.text = "Date sélectionnée : $formattedDate"
+        }
+
+        val statuts = arrayOf("Option 1", "Option 2", "Option 3")
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinnerStatut.adapter = adapter
+
+        alertDialogBuilder.setPositiveButton("Valider ✅") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialogBuilder.setNegativeButton("Annuler ❌") { dialog, _ ->
             dialog.dismiss()
         }
 
-        alert_dialog.setNegativeButton("Annuler ❌") { dialog, which ->
-            dialog.dismiss()
-        }
-
-        val modal = alert_dialog.create()
+        val modal = alertDialogBuilder.create()
         modal.show()
     }
 
