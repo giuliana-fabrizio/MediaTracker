@@ -3,11 +3,11 @@ package com.example.mediatracker.bdd
 import androidx.room.*
 
 @Entity(
-    primaryKeys = ["mediaId", "saisonNum"],
+    primaryKeys = ["mediaNom", "saisonNum"],
     foreignKeys = [ForeignKey(
         entity = Media::class,
-        parentColumns = ["id_media"],
-        childColumns = ["mediaId"],
+        parentColumns = ["nom"],
+        childColumns = ["mediaNom"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Saison::class,
@@ -17,7 +17,7 @@ import androidx.room.*
     )]
 )
 data class MediaSaison(
-    val mediaId: Int,
+    val mediaNom: String,
     val saisonNum: Int
 )
 

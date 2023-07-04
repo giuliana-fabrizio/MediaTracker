@@ -53,7 +53,7 @@ class ListeAdaptateur(
             Navigation.findNavController(fragment.view!!)
                 .navigate(
                     R.id.id_action_liste_detail,
-                    bundleOf("id_media" to media.id_media.toString())
+                    bundleOf("id_media" to media.nom)
                 )
         }
 

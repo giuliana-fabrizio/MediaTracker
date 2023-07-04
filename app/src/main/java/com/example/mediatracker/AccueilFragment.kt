@@ -12,7 +12,7 @@ class AccueilFragment : Fragment() {
     data class RessourcesCarrousel(
         var id_view_pager: Int = 0,
         var id_indicator: Int = 0,
-        var str_categorie: Int = 0,
+        var str_categorie: String = "",
         var str_lien_img: String = ""
     )
 
@@ -25,19 +25,19 @@ class AccueilFragment : Fragment() {
             RessourcesCarrousel(
                 R.id.id_viewPager_1,
                 R.id.id_indicator_1,
-                R.string.onglet_1,
+                getString(R.string.onglet_1),
                 getString(R.string.lien_img_onglet_1)
             ),
             RessourcesCarrousel(
                 R.id.id_viewPager_2,
                 R.id.id_indicator_2,
-                R.string.onglet_2,
+                getString(R.string.onglet_2),
                 getString(R.string.lien_img_onglet_2)
             ),
             RessourcesCarrousel(
                 R.id.id_viewPager_3,
                 R.id.id_indicator_3,
-                R.string.onglet_3,
+                getString(R.string.onglet_3),
                 getString(R.string.lien_img_onglet_3)
             )
         )
@@ -46,12 +46,12 @@ class AccueilFragment : Fragment() {
             val viewPager: ViewPager = rootView.findViewById(view.id_view_pager)
             val indicator: TabLayout = rootView.findViewById(view.id_indicator)
 
-            val allMedias = db.mediaDao().getAll(getString(view.str_categorie))
+            val allMedias = db.mediaDao().getAll(view.str_categorie)
             var medias = listOf(
                 Pair(view.str_categorie, view.str_lien_img)
             )
             medias = medias.plus(allMedias.map { res ->
-                Pair(res.id_media, res.image)
+                Pair(res.nom, res.image)
             }.filter { res -> res.second.length !== 0 })
 
             val adapter = AccueilAdapter(medias, this)

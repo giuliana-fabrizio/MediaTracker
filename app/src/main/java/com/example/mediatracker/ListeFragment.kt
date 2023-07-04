@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mediatracker.bdd.Media
 import com.example.mediatracker.bdd.MediaDao
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class ListeFragment : Fragment() {
 
@@ -66,32 +67,40 @@ class ListeFragment : Fragment() {
         val modalAjout = inflater.inflate(R.layout.modal_ajout, null)
         alertDialogBuilder.setView(modalAjout)
 
+        val constraintLayout: ConstraintLayout =
+            modalAjout.findViewById(R.id.id_ConstraintLayout_modal)
         val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
         val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
         val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
-        val spinnerStatut: Spinner = modalAjout.findViewById(R.id.spinnerStatut)
+        val spinnerStatut: Spinner = modalAjout.findViewById(R.id.id_liste_statut)
 
         calendarView.visibility = View.GONE
         btnDate.setOnClickListener {
-            calendarView.visibility = if (calendarView.visibility == View.GONE) View.VISIBLE else View.GONE
+            calendarView.visibility =
+                if (calendarView.visibility == View.GONE) View.VISIBLE else View.GONE
+            constraintLayout.visibility =
+                if (calendarView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
-            dateSelectionneeTextView.text = "Date sélectionnée : $formattedDate"
-            calendarView.visibility = View.GONE // Ajout de cette ligne pour masquer le calendrier après la sélection
+            dateSelectionneeTextView.text = "$formattedDate"
+            calendarView.visibility = View.GONE
+            constraintLayout.visibility = View.VISIBLE
         }
 
-        val statuts = arrayOf("Option 1", "Option 2", "Option 3")
+        val statuts = MainActivity.db.statutDao().getAllStatut()
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         spinnerStatut.adapter = adapter
 
         alertDialogBuilder.setPositiveButton("Valider ✅") { dialog, _ ->
             dialog.dismiss()
+//            val media = Media("", "", "", "", 0, 0)
+//            MainActivity.db.mediaDao().insert(media)
         }
+
         alertDialogBuilder.setNegativeButton("Annuler ❌") { dialog, _ ->
             dialog.dismiss()
         }
@@ -99,7 +108,6 @@ class ListeFragment : Fragment() {
         val modal = alertDialogBuilder.create()
         modal.show()
     }
-
 
     private fun rechercherParNom(item: MenuItem) {
         val searchView = item.actionView as SearchView

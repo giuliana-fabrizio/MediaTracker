@@ -4,8 +4,9 @@ import androidx.room.*
 
 @Entity
 data class Categorie(
-    @PrimaryKey(autoGenerate = true) val id_categorie: Int,
-    @ColumnInfo(name = "libelle_categorie") val libelle_categorie: String
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "libelle_categorie")
+    val libelle_categorie: String
 )
 
 @Dao

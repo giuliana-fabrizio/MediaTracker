@@ -12,4 +12,8 @@
     <dimen name="trait_taille">1dp</dimen>
 
     <dimen name="taille_text_modal">15dp</dimen>
+    <dimen name="taille_edit_text_ajout">140dp</dimen>
+    <dimen name="espacement_titre_modal">40dp</dimen>
+    <dimen name="espacement_element_modal">30dp</dimen>
+    <dimen name="espacement_spinner_modal">30dp</dimen>
 </resources>

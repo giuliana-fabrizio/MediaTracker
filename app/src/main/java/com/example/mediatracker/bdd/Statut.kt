@@ -4,12 +4,16 @@ import androidx.room.*
 
 @Entity
 data class Statut(
-    @PrimaryKey(autoGenerate = true) val id_statut: Int,
-    @ColumnInfo(name = "libelle_statut") val libelle_statut: String
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "libelle_statut")
+    val libelle_statut: String
 )
 
 @Dao
 interface StatutDao {
+
+    @Query("SELECT * FROM statut")
+    fun getAllStatut(): List<String>
 
     @Insert
     fun insert(statut: Statut)

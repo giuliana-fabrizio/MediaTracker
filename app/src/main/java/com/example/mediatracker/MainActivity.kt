@@ -49,52 +49,49 @@ class MainActivity : AppCompatActivity() {
         db.runInTransaction {
             db.categorieDao().apply {
                 deleteTable()
-                insert(Categorie(1, getString(R.string.onglet_1)))
-                insert(Categorie(2, getString(R.string.onglet_2)))
-                insert(Categorie(3, getString(R.string.onglet_3)))
+                insert(Categorie(getString(R.string.onglet_1)))
+                insert(Categorie(getString(R.string.onglet_2)))
+                insert(Categorie(getString(R.string.onglet_3)))
             }
 
             db.statutDao().apply {
                 deleteTable()
-                insert(Statut(1, getString(R.string.statut_1)))
-                insert(Statut(2, getString(R.string.statut_2)))
-                insert(Statut(3, getString(R.string.statut_3)))
-                insert(Statut(4, getString(R.string.statut_4)))
+                insert(Statut(getString(R.string.statut_1)))
+                insert(Statut(getString(R.string.statut_2)))
+                insert(Statut(getString(R.string.statut_3)))
+                insert(Statut(getString(R.string.statut_4)))
             }
 
             db.mediaDao().apply {
                 deleteTable()
                 insert(
                     Media(
-                        1,
                         "TUTU",
                         "",
                         "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
                         "",
-                        1,
-                        1
+                        getString(R.string.onglet_1),
+                        getString(R.string.statut_1),
                     )
                 )
                 insert(
                     Media(
-                        2,
                         "TATA",
                         "",
                         "",
                         "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
-                        2,
-                        1
+                        getString(R.string.onglet_2),
+                        getString(R.string.statut_1)
                     )
                 )
                 insert(
                     Media(
-                        3,
                         "TOTO",
                         "",
                         "https://i.pinimg.com/originals/cd/91/7f/cd917ffff15a31088e3b385399c84e96.jpg",
                         "",
-                        1,
-                        4
+                        getString(R.string.onglet_1),
+                        getString(R.string.statut_4),
                     )
                 )
             }
@@ -115,9 +112,9 @@ class MainActivity : AppCompatActivity() {
 
             db.mediaSaisonDao().apply {
                 deleteTable()
-                insert(MediaSaison(1, 1))
-                insert(MediaSaison(2, 3))
-                insert(MediaSaison(3, 2))
+                insert(MediaSaison("TUTU", 1))
+                insert(MediaSaison("TATA", 3))
+                insert(MediaSaison("TOTO", 2))
             }
         }
     }

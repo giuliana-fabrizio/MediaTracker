@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 
 class AccueilAdapter(
-    private val medias: List<Pair<Int, String>>,
+    private val medias: List<Pair<String, String>>,
     private val fragment: AccueilFragment
 ) : PagerAdapter() {
 
@@ -47,7 +47,7 @@ class AccueilAdapter(
                 imageView.setOnClickListener {
                     Navigation.findNavController(fragment.view!!).navigate(
                         R.id.id_action_accueil_liste,
-                        bundleOf( "media" to fragment.getString(media.first))
+                        bundleOf( "media" to media.first)
                     )
                 }
             } else {
