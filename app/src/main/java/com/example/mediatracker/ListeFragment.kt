@@ -79,6 +79,7 @@ class ListeFragment : Fragment() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
             dateSelectionneeTextView.text = "Date sélectionnée : $formattedDate"
+            calendarView.visibility = View.GONE // Ajout de cette ligne pour masquer le calendrier après la sélection
         }
 
         val statuts = arrayOf("Option 1", "Option 2", "Option 3")
@@ -98,6 +99,7 @@ class ListeFragment : Fragment() {
         val modal = alertDialogBuilder.create()
         modal.show()
     }
+
 
     private fun rechercherParNom(item: MenuItem) {
         val searchView = item.actionView as SearchView
