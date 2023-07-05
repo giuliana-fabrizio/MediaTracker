@@ -37,12 +37,6 @@ class AccueilAdapter(
             Picasso.get().load(imageUrl).into(imageView)
             container.addView(itemView)
 
-//            Toast.makeText(
-//                fragment.requireContext(),
-//                "Ta cliqué et ça marche truc de fou nan ?",
-//                Toast.LENGTH_SHORT
-//            ).show()
-
             if (position == 0) {
                 imageView.setOnClickListener {
                     Navigation.findNavController(fragment.view!!).navigate(

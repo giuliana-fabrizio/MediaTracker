@@ -10,7 +10,7 @@
         android:id="@+id/id_trait_liste"
         android:layout_width="match_parent"
         android:layout_height="@dimen/trait_taille"
-        android:background="@color/purple_200"
+        android:background="@color/rose_fonce"
         tools:ignore="MissingConstraints" />
 
     <ImageView

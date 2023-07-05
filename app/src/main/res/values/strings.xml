@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">MediaTracker</string>
+    <string name="app_name">Media\nTracker</string>
 
     <string name="onglet_1">Animés</string>
     <string name="onglet_2">Films</string>
     <string name="onglet_3">Séries</string>
     <string name="label_vide">Vide</string>
 
+    <!-- =============================================================================================== accueil -->
     <string name="lien_img_onglet_1">
         https://cdn.discordapp.com/attachments/893086747230089227/1123541773512347708/Animes_1.png
     </string>
@@ -17,7 +18,7 @@
     </string>
 
     <!-- =============================================================================================== statut -->
-    <string name="statut_1">A commencer</string>
+    <string name="statut_1">À commencer</string>
     <string name="statut_2">En cours</string>
     <string name="statut_3">En pause</string>
     <string name="statut_4">Terminé</string>
@@ -25,6 +26,14 @@
     <!-- =============================================================================================== liste -->
     <string name="btn_1">Site web</string>
     <string name="btn_2">Détail</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- =============================================================================================== statut -->
+    <string name="label_ajout_nom">Nom du média 📰</string>
+    <string name="label_description">Description 🖋</string>
+    <string name="label_image">Lien de l\'image 🖼️</string>
+    <string name="label_lien_web">Lien du média 🎥</string>
+    <string name="label_statut">Statut du média 🧮</string>
+    <string name="label_saison">Saison 🛋️</string>
+    <string name="label_episode">Épisode 📺</string>
+    <string name="label_date_sortie">Date de sortie 📆</string>
 </resources>

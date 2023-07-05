@@ -1,6 +1,7 @@
 package com.example.mediatracker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -16,7 +17,6 @@ class ListeFragment : Fragment() {
 
     private var fragment = this
     private lateinit var medias: List<Media>
-    private lateinit var mediaDao: MediaDao
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -33,9 +33,9 @@ class ListeFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        mediaDao = MainActivity.db.mediaDao()
-        medias = mediaDao.getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
-
+        medias = MainActivity.db.mediaDao()
+            .getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
+        Log.i("tata", medias.toString())
         return view
     }
 
@@ -54,9 +54,7 @@ class ListeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.id_liste_action_1 -> modal_ajouter()
-
             R.id.id_liste_action_2 -> rechercherParNom(item)
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -69,12 +67,37 @@ class ListeFragment : Fragment() {
 
         val constraintLayout: ConstraintLayout =
             modalAjout.findViewById(R.id.id_ConstraintLayout_modal)
-        val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
-        val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
-        val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
+        val nomEditText: EditText = modalAjout.findViewById(R.id.id_ajout_nom)
+        val descriptionEditText: EditText = modalAjout.findViewById(R.id.id_ajout_description)
+        val imageEditText: EditText = modalAjout.findViewById(R.id.id_ajout_image)
+        val lienEditText: EditText = modalAjout.findViewById(R.id.id_ajout_lien)
         val spinnerStatut: Spinner = modalAjout.findViewById(R.id.id_liste_statut)
+        var selectedText = ""
+        val saisonEditText: EditText = modalAjout.findViewById(R.id.id_ajout_saison)
+        val episodeEditText: EditText = modalAjout.findViewById(R.id.id_ajout_episode)
+        val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
+        val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
+        val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
 
+        val statuts = MainActivity.db.statutDao().getAllStatut()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerStatut.adapter = adapter
         calendarView.visibility = View.GONE
+
+        spinnerStatut.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedText = statuts[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
         btnDate.setOnClickListener {
             calendarView.visibility =
                 if (calendarView.visibility == View.GONE) View.VISIBLE else View.GONE
@@ -89,16 +112,28 @@ class ListeFragment : Fragment() {
             constraintLayout.visibility = View.VISIBLE
         }
 
-        val statuts = MainActivity.db.statutDao().getAllStatut()
-
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerStatut.adapter = adapter
-
         alertDialogBuilder.setPositiveButton("Valider ✅") { dialog, _ ->
-            dialog.dismiss()
-//            val media = Media("", "", "", "", 0, 0)
-//            MainActivity.db.mediaDao().insert(media)
+//            dialog.dismiss()
+            val media = Media(
+                nom = nomEditText.text.toString(),
+                description = descriptionEditText.text.toString(),
+                image = imageEditText.text.toString(),
+                lien = lienEditText.text.toString(),
+                media_categorie = (activity as AppCompatActivity).supportActionBar?.title.toString(),
+                media_statut = selectedText
+            )
+
+            MainActivity.db.mediaDao().apply {
+                insert(media)
+                medias = getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
+            }
+            recyclerView.adapter = ListeAdaptateur(medias, fragment)
+
+            Toast.makeText(
+                fragment.requireContext(),
+                "Ajout réussi ! 🧸",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         alertDialogBuilder.setNegativeButton("Annuler ❌") { dialog, _ ->
