@@ -1,16 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/espacement"
     tools:context=".DetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/id_test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="À voir" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/id_constraint_layout_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacement_element"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/id_detail_img"
+            android:layout_width="@dimen/width_img"
+            android:layout_height="@dimen/height_img"
+            android:layout_margin="4dp"
+            android:background="@android:color/black"
+            tools:ignore="ContentDescription, MissingConstraints" />
+
+        <EditText
+            android:id="@+id/id_detail_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espacement_element"
+            android:gravity="center"
+            android:inputType="textUri"
+            app:layout_constraintBottom_toBottomOf="@id/id_detail_img"
+            app:layout_constraintStart_toEndOf="@id/id_detail_img"
+            app:layout_constraintTop_toTopOf="@id/id_detail_img"
+            tools:ignore="NotSibling,TouchTargetSizeCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/id_detail_nom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/id_constraint_layout_photo"
+        tools:ignore="MissingConstraints,TouchTargetSizeCheck"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <EditText
+        android:id="@+id/id_detail_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:inputType="textUri"
+        app:layout_constraintTop_toBottomOf="@id/id_detail_nom"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/id_detail_btn_lien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Site web"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_detail_description"
+        tools:ignore="MissingConstraints" />
+
+    <Spinner
+        android:id="@+id/id_detail_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/id_detail_btn_lien"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/id_constraint_layout_saison_episode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_detail_spinner"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/id_detail_saison"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="Saisons"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/id_detail_episode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espacement_element"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="Episode"
+            app:layout_constraintStart_toEndOf="@id/id_detail_saison"
+            tools:ignore="TouchTargetSizeCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacement_element"
+        android:layout_marginBottom="@dimen/espacement_element"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/id_detail_btn_supp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Supprimer 🚮"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/id_detail_btn_modifier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/espacement_element"
+            android:text="Modifier 🖋️"
+            app:layout_constraintStart_toEndOf="@id/id_detail_btn_supp"
+            app:layout_constraintTop_toTopOf="@id/id_detail_btn_supp"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

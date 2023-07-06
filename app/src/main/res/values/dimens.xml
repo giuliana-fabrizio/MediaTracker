@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="espacement">10dp</dimen>
+    <dimen name="espacement_element">30dp</dimen>
+    <dimen name="width_img">150dp</dimen>
+    <dimen name="height_img">100dp</dimen>
 
     <dimen name="heigth_carroussel_accueil">180dp</dimen>
     <dimen name="margin_top_accueil">30dp</dimen>
     <dimen name="margin_top_indicateur_accueil">5dp</dimen>
 
     <dimen name="taille_text_liste">20sp</dimen>
-
-    <dimen name="taille_img_liste">100dp</dimen>
     <dimen name="trait_taille">1dp</dimen>
 
     <dimen name="taille_text_titre">25sp</dimen>
     <dimen name="taille_text_modal">15sp</dimen>
     <dimen name="taille_edit_text_ajout">140sp</dimen>
     <dimen name="espacement_titre_modal">40dp</dimen>
-    <dimen name="espacement_element_modal">30dp</dimen>
     <dimen name="espacement_spinner_modal">30dp</dimen>
     <dimen name="espacement_button_modal">17dp</dimen>
 </resources>

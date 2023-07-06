@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/id_img_media_detail"
-        android:layout_width="150dp"
-        android:layout_height="@dimen/taille_img_liste"
+        android:layout_width="@dimen/width_img"
+        android:layout_height="@dimen/height_img"
         android:layout_marginTop="@dimen/espacement"
         app:layout_constraintTop_toBottomOf="@+id/id_trait_liste"
         tools:ignore="MissingConstraints" />
