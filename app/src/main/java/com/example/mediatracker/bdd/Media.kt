@@ -32,6 +32,16 @@ interface MediaDao {
     )
     fun getAll(categorie: String): List<Media>
 
+    @Query(
+        "SELECT media.* " +
+                "FROM media " +
+                "INNER JOIN `statut` ON `statut`.libelle_statut = media.media_statut " +
+                "INNER JOIN mediaSaison ON mediaSaison.mediaNom = media.nom " +
+                "INNER JOIN episode ON episode.episode_saison = mediaSaison.saisonNum " +
+                "WHERE media.nom LIKE :nom"
+    )
+    fun getOne(nom: String): Media
+
     @Insert
     fun insert(media: Media)
 

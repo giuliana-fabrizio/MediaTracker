@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
                 insert(
                     Media(
                         "TUTU",
-                        "",
+                        "TUTU est partie en vacances à Turturfure",
                         "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
-                        "",
+                        "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
                         getString(R.string.onglet_1),
                         getString(R.string.statut_1),
                     )

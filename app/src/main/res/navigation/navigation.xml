@@ -87,6 +87,14 @@
         android:id="@+id/detailFragment"
         android:name="com.example.mediatracker.DetailFragment"
         android:label="Detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail">
+        <action
+            android:id="@+id/id_action_detail_liste"
+            app:destination="@id/listeFragment">
+            <argument
+                android:name="media"
+                app:argType="string" />
+        </action>
+    </fragment>
 
 </navigation>
