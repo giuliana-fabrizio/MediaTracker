@@ -123,19 +123,18 @@
             android:id="@+id/id_constraint_layout_saison_episode_modal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/espacement_element"
             app:layout_constraintTop_toBottomOf="@id/id_ajout_lien">
 
             <TextView
                 android:id="@+id/id_label_saison"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espacement_element"
                 android:text="@string/label_saison"
                 android:textColor="@color/black"
                 android:textSize="@dimen/taille_text_modal"
                 app:layout_constraintEnd_toStartOf="@id/id_label_episode"
                 app:layout_constraintStart_toStartOf="parent"
-
                 tools:ignore="MissingConstraints,TextSizeCheck" />
 
             <EditText

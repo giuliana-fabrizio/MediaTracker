@@ -45,6 +45,7 @@
     <string name="succes_ajout">Ajout réussi ! 🧸</string>
     <string name="succes_suppression">Media supprimé ✅</string>
 
+    <string name="erreur_ajout">Ajout impossible, média déjà présent 🙁</string>
     <string name="erreur_redirection_web">Pas de lien renseigné 🥸</string>
 
 </resources>

@@ -133,8 +133,12 @@ class DetailFragment : Fragment() {
             } else {
                 MainActivity.db.mediaDao().deleteByName(detail.nom)
                 val bundle = bundleOf("media" to detail.media_categorie)
-                Navigation.findNavController(view).navigate(R.id.id_action_accueil_liste, bundle)
-                Toast.makeText(requireContext(), getString(R.string.succes_suppression), Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(view).navigate(R.id.id_action_detail_liste, bundle)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.succes_suppression),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

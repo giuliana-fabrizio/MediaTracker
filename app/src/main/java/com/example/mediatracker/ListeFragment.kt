@@ -131,17 +131,26 @@ class ListeFragment : Fragment() {
                 num_episode = episodeEditText.text.toString().toInt()
             )
 
-            MainActivity.db.mediaDao().apply {
-                insert(media)
-                medias = getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
-            }
-            recyclerView.adapter = ListeAdaptateur(medias, fragment)
+            try {
+                MainActivity.db.mediaDao().apply {
+                    insert(media)
+                    medias =
+                        getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
+                }
+                recyclerView.adapter = ListeAdaptateur(medias, fragment)
 
-            Toast.makeText(
-                fragment.requireContext(),
-                getString(R.string.succes_ajout),
-                Toast.LENGTH_SHORT
-            ).show()
+                Toast.makeText(
+                    fragment.requireContext(),
+                    getString(R.string.succes_ajout),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    fragment.requireContext(),
+                    getString(R.string.erreur_ajout),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         alertDialogBuilder.setNegativeButton(getString(R.string.btn_6)) { dialog, _ ->
