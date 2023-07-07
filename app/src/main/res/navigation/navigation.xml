@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/accueilFragment"
         android:name="com.example.mediatracker.AccueilFragment"
-        android:label="Accueil"
+        android:label="@string/page_accueil"
         tools:layout="@layout/fragment_accueil">
         <action
             android:id="@+id/id_action_accueil_liste"

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Media\nTracker</string>
 
+    <string name="page_accueil">Accueil</string>
     <string name="onglet_1">Animés</string>
     <string name="onglet_2">Films</string>
     <string name="onglet_3">Séries</string>
@@ -26,6 +27,10 @@
     <!-- =============================================================================================== liste -->
     <string name="btn_1">Site web</string>
     <string name="btn_2">Détail</string>
+    <string name="btn_3">Supprimer 🚮</string>
+    <string name="btn_4">Modifier 🖋</string>
+    <string name="btn_5">Valider ✅</string>
+    <string name="btn_6">Annuler ❌</string>
 
     <!-- =============================================================================================== statut -->
     <string name="label_ajout_nom">Nom du média 📰</string>
@@ -36,4 +41,10 @@
     <string name="label_saison">Saison 🛋️</string>
     <string name="label_episode">Épisode 📺</string>
     <string name="label_date_sortie">Date de sortie 📆</string>
+
+    <string name="succes_ajout">Ajout réussi ! 🧸</string>
+    <string name="succes_suppression">Media supprimé ✅</string>
+
+    <string name="erreur_redirection_web">Pas de lien renseigné 🥸</string>
+
 </resources>

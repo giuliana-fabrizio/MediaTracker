@@ -16,7 +16,8 @@
         android:textSize="@dimen/taille_text_titre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="Autofill,MissingConstraints,TouchTargetSizeCheck"
+        tools:layout_editor_absoluteY="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/id_ConstraintLayout_modal"
@@ -47,7 +48,7 @@
             app:layout_constraintEnd_toEndOf="@id/id_label_description"
             app:layout_constraintStart_toStartOf="@id/id_label_description"
             app:layout_constraintTop_toBottomOf="@id/id_label_description"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            tools:ignore="Autofill,MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/id_label_image"
@@ -69,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="@id/id_label_image"
             app:layout_constraintStart_toStartOf="@id/id_label_image"
             app:layout_constraintTop_toBottomOf="@id/id_label_image"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            tools:ignore="Autofill,MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/id_label_lien"
@@ -92,7 +93,7 @@
             app:layout_constraintEnd_toEndOf="@id/id_label_lien"
             app:layout_constraintStart_toStartOf="@id/id_label_lien"
             app:layout_constraintTop_toBottomOf="@id/id_label_lien"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            tools:ignore="Autofill,MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/id_label_statut"
@@ -116,52 +117,63 @@
             app:layout_constraintEnd_toEndOf="@id/id_label_statut"
             app:layout_constraintStart_toStartOf="@id/id_label_statut"
             app:layout_constraintTop_toBottomOf="@id/id_label_statut"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-        <TextView
-            android:id="@+id/id_label_saison"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/id_constraint_layout_saison_episode_modal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/espacement_element"
-            android:text="@string/label_saison"
-            android:textColor="@color/black"
-            android:textSize="@dimen/taille_text_modal"
-            app:layout_constraintEnd_toEndOf="@id/id_label_description"
-            app:layout_constraintStart_toStartOf="@id/id_label_description"
-            app:layout_constraintTop_toBottomOf="@id/id_ajout_lien"
-            tools:ignore="MissingConstraints,TextSizeCheck" />
+            app:layout_constraintTop_toBottomOf="@id/id_ajout_lien">
 
-        <EditText
-            android:id="@+id/id_ajout_saison"
-            android:layout_width="@dimen/taille_edit_text_ajout"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@id/id_label_saison"
-            app:layout_constraintStart_toStartOf="@id/id_label_saison"
-            app:layout_constraintTop_toBottomOf="@id/id_label_saison"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            <TextView
+                android:id="@+id/id_label_saison"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espacement_element"
+                android:text="@string/label_saison"
+                android:textColor="@color/black"
+                android:textSize="@dimen/taille_text_modal"
+                app:layout_constraintEnd_toStartOf="@id/id_label_episode"
+                app:layout_constraintStart_toStartOf="parent"
 
-        <TextView
-            android:id="@+id/id_label_episode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_episode"
-            android:textColor="@color/black"
-            android:textSize="@dimen/taille_text_modal"
-            app:layout_constraintEnd_toEndOf="@id/id_label_image"
-            app:layout_constraintStart_toStartOf="@id/id_label_image"
-            app:layout_constraintTop_toTopOf="@id/id_label_saison"
-            tools:ignore="MissingConstraints,TextSizeCheck" />
+                tools:ignore="MissingConstraints,TextSizeCheck" />
 
-        <EditText
-            android:id="@+id/id_ajout_episode"
-            android:layout_width="@dimen/taille_edit_text_ajout"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@id/id_label_episode"
-            app:layout_constraintStart_toStartOf="@id/id_label_episode"
-            app:layout_constraintTop_toBottomOf="@id/id_label_episode"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+            <EditText
+                android:id="@+id/id_ajout_saison"
+                android:layout_width="@dimen/taille_edit_text_ajout"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="@id/id_label_saison"
+                app:layout_constraintStart_toStartOf="@id/id_label_saison"
+                app:layout_constraintTop_toBottomOf="@id/id_label_saison"
+                tools:ignore="Autofill,MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/id_label_episode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/espacement_spinner_modal"
+                android:text="@string/label_episode"
+                android:textColor="@color/black"
+                android:textSize="@dimen/taille_text_modal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/id_label_saison"
+                app:layout_constraintTop_toTopOf="@id/id_label_saison"
+                tools:ignore="MissingConstraints,TextSizeCheck" />
+
+            <EditText
+                android:id="@+id/id_ajout_episode"
+                android:layout_width="@dimen/taille_edit_text_ajout"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="@id/id_label_episode"
+                app:layout_constraintStart_toStartOf="@id/id_label_episode"
+                app:layout_constraintTop_toBottomOf="@id/id_label_episode"
+                tools:ignore="Autofill,MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -174,7 +186,7 @@
         android:text="@string/label_date_sortie"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/id_ConstraintLayout_modal"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints,TextContrastCheck" />
 
     <TextView
         android:id="@+id/id_date_selectionnee"

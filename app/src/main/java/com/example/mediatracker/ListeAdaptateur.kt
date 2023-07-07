@@ -2,7 +2,6 @@ package com.example.mediatracker
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ class ListeAdaptateur(
     private val fragment: Fragment
 ) : RecyclerView.Adapter<ListeAdaptateur.ItemListeViewHolder>() {
 
-    class ItemListeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemListeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val trait: View = view.findViewById(R.id.id_trait_liste)
         val image: ImageView = view.findViewById(R.id.id_img_media_detail)
         val textView: TextView = view.findViewById(R.id.id_textview_media_detail)
@@ -30,45 +29,44 @@ class ListeAdaptateur(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemListeViewHolder {
-        var layout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_liste, parent, false)
-
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val layout = layoutInflater.inflate(R.layout.item_liste, parent, false)
         return ItemListeViewHolder(layout)
     }
 
-    override fun getItemCount() = medias.size
+    override fun getItemCount(): Int = medias.size
 
     override fun onBindViewHolder(holder: ItemListeViewHolder, position: Int) {
+        val media = medias[position]
 
-        if (position === 0) holder.trait.visibility = View.INVISIBLE
+        if (position == 0) {
+            holder.trait.visibility = View.INVISIBLE
+        }
 
-        var media = medias[position]
-
-        if (media.image.length === 0) holder.image.visibility = View.INVISIBLE
-        else Picasso.get().load(media.image).into(holder.image)
+        if (media.image.isNotEmpty()) {
+            holder.image.visibility = View.VISIBLE
+            Picasso.get().load(media.image).into(holder.image)
+        } else {
+            holder.image.visibility = View.INVISIBLE
+        }
 
         holder.textView.text = media.nom
 
         holder.btn_page_detail.setOnClickListener {
-            Navigation.findNavController(fragment.view!!)
-                .navigate(
-                    R.id.id_action_liste_detail,
-                    bundleOf("id_media" to media.nom)
-                )
+            val bundle = bundleOf("id_media" to media.nom)
+            Navigation.findNavController(fragment.requireView())
+                .navigate(R.id.id_action_liste_detail, bundle)
         }
 
-        holder.btn_site_web.setOnClickListener {
-            val url = media.lien
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            fragment.startActivity(intent)
-        }
-
-        if (media.lien.length === 0) holder.btn_site_web.visibility = View.INVISIBLE
-
-        holder.btn_site_web.setOnClickListener {
-            val url = media.lien
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            fragment.startActivity(intent)
+        if (media.lien.isNotEmpty()) {
+            holder.btn_site_web.visibility = View.VISIBLE
+            holder.btn_site_web.setOnClickListener {
+                val url = media.lien
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                fragment.startActivity(intent)
+            }
+        } else {
+            holder.btn_site_web.visibility = View.INVISIBLE
         }
     }
 }

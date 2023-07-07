@@ -19,7 +19,7 @@
         android:layout_height="@dimen/height_img"
         android:layout_marginTop="@dimen/espacement"
         app:layout_constraintTop_toBottomOf="@+id/id_trait_liste"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="ContentDescription,MissingConstraints" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
             android:layout_marginTop="@dimen/espacement"
             android:text="@string/btn_2"
             app:layout_constraintTop_toBottomOf="@id/id_textview_media_detail"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints,TextContrastCheck" />
 
         <Button
             android:id="@+id/id_btn_site_web_detail"
@@ -55,7 +55,7 @@
             android:text="@string/btn_1"
             app:layout_constraintStart_toEndOf="@id/id_btn_page_detail"
             app:layout_constraintTop_toBottomOf="@id/id_textview_media_detail"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

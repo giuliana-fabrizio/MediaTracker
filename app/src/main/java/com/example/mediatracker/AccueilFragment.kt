@@ -9,46 +9,32 @@ import com.google.android.material.tabs.TabLayout
 
 class AccueilFragment : Fragment() {
 
-    data class RessourcesCarrousel(
-        var id_view_pager: Int = 0,
-        var id_indicator: Int = 0,
-        var str_categorie: String = "",
-        var str_lien_img: String = ""
-    )
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_accueil, container, false)
 
-        var viewAccueil = listOf(
-            RessourcesCarrousel(
-                R.id.id_viewPager_1,
-                R.id.id_indicator_1,
-                getString(R.string.onglet_1),
-                getString(R.string.lien_img_onglet_1)
-            ),
-            RessourcesCarrousel(
-                R.id.id_viewPager_2,
-                R.id.id_indicator_2,
-                getString(R.string.onglet_2),
-                getString(R.string.lien_img_onglet_2)
-            ),
-            RessourcesCarrousel(
-                R.id.id_viewPager_3,
-                R.id.id_indicator_3,
-                getString(R.string.onglet_3),
-                getString(R.string.lien_img_onglet_3)
-            )
+        val ressources = listOf(
+            Pair("id_viewPager_", "id"),
+            Pair("id_indicator_", "id"),
+            Pair("onglet_", "string"),
+            Pair("lien_img_onglet_", "string")
         )
 
-        for (view in viewAccueil) {
-            val viewPager: ViewPager = rootView.findViewById(view.id_view_pager)
-            val indicator: TabLayout = rootView.findViewById(view.id_indicator)
+        for (i in 1..3) {
 
-            val allMedias = db.mediaDao().getAll(view.str_categorie)
+            val params = (0..3).map { index ->
+                resources.getIdentifier(
+                    ressources[index].first+"$i", ressources[index].second, "com.example.mediatracker"
+                )
+            }
+
+            val viewPager: ViewPager = rootView.findViewById(params[0])
+            val indicator: TabLayout = rootView.findViewById(params[1])
+
+            val allMedias = db.mediaDao().getAll(getString(params[2]))
             var medias = listOf(
-                Pair(view.str_categorie, view.str_lien_img)
+                Pair(getString(params[2]), getString(params[3]))
             )
             medias = medias.plus(allMedias.map { res ->
                 Pair(res.nom, res.image)

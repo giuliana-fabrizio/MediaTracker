@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
                         "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
                         getString(R.string.onglet_1),
                         getString(R.string.statut_1),
+                        7,
+                        5
                     )
                 )
                 insert(
@@ -81,7 +83,9 @@ class MainActivity : AppCompatActivity() {
                         "",
                         "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
                         getString(R.string.onglet_2),
-                        getString(R.string.statut_1)
+                        getString(R.string.statut_1),
+                        null,
+                        null
                     )
                 )
                 insert(
@@ -92,29 +96,10 @@ class MainActivity : AppCompatActivity() {
                         "",
                         getString(R.string.onglet_1),
                         getString(R.string.statut_4),
+                        1,
+                        5
                     )
                 )
-            }
-
-            db.saisonDao().apply {
-                deleteTable()
-                insert(Saison(1))
-                insert(Saison(2))
-                insert(Saison(3))
-            }
-
-            db.episodeDao().apply {
-                deleteTable()
-                insert(Episode(10, 1))
-                insert(Episode(50, 3))
-                insert(Episode(40, 2))
-            }
-
-            db.mediaSaisonDao().apply {
-                deleteTable()
-                insert(MediaSaison("TUTU", 1))
-                insert(MediaSaison("TATA", 3))
-                insert(MediaSaison("TOTO", 2))
             }
         }
     }

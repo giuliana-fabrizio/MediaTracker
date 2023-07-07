@@ -1,7 +1,7 @@
 package com.example.mediatracker
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mediatracker.bdd.Media
-import com.example.mediatracker.bdd.MediaDao
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 
+@Suppress("DEPRECATION")
 class ListeFragment : Fragment() {
 
     private var fragment = this
@@ -35,7 +35,6 @@ class ListeFragment : Fragment() {
 
         medias = MainActivity.db.mediaDao()
             .getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
-        Log.i("tata", medias.toString())
         return view
     }
 
@@ -46,6 +45,7 @@ class ListeFragment : Fragment() {
         recyclerView.adapter = ListeAdaptateur(medias, this)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_liste, menu)
@@ -59,6 +59,7 @@ class ListeFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("MissingInflatedId")
     private fun modal_ajouter() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
@@ -67,19 +68,25 @@ class ListeFragment : Fragment() {
 
         val constraintLayout: ConstraintLayout =
             modalAjout.findViewById(R.id.id_ConstraintLayout_modal)
+        val constraintLayoutSaisonEpisode: ConstraintLayout =
+            modalAjout.findViewById(R.id.id_constraint_layout_saison_episode_modal)
         val nomEditText: EditText = modalAjout.findViewById(R.id.id_ajout_nom)
         val descriptionEditText: EditText = modalAjout.findViewById(R.id.id_ajout_description)
         val imageEditText: EditText = modalAjout.findViewById(R.id.id_ajout_image)
         val lienEditText: EditText = modalAjout.findViewById(R.id.id_ajout_lien)
         val spinnerStatut: Spinner = modalAjout.findViewById(R.id.id_liste_statut)
-        var selectedText = ""
         val saisonEditText: EditText = modalAjout.findViewById(R.id.id_ajout_saison)
         val episodeEditText: EditText = modalAjout.findViewById(R.id.id_ajout_episode)
         val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
         val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
         val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
 
+        var selectedText = ""
         val statuts = MainActivity.db.statutDao().getAllStatut()
+
+        if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2))
+            constraintLayoutSaisonEpisode.visibility = View.GONE
+
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerStatut.adapter = adapter
@@ -107,20 +114,21 @@ class ListeFragment : Fragment() {
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
-            dateSelectionneeTextView.text = "$formattedDate"
+            dateSelectionneeTextView.text = formattedDate
             calendarView.visibility = View.GONE
             constraintLayout.visibility = View.VISIBLE
         }
 
-        alertDialogBuilder.setPositiveButton("Valider ✅") { dialog, _ ->
-//            dialog.dismiss()
+        alertDialogBuilder.setPositiveButton(getString(R.string.btn_5)) { dialog, _ ->
             val media = Media(
                 nom = nomEditText.text.toString(),
                 description = descriptionEditText.text.toString(),
                 image = imageEditText.text.toString(),
                 lien = lienEditText.text.toString(),
                 media_categorie = (activity as AppCompatActivity).supportActionBar?.title.toString(),
-                media_statut = selectedText
+                media_statut = selectedText,
+                num_saison = saisonEditText.text.toString().toInt(),
+                num_episode = episodeEditText.text.toString().toInt()
             )
 
             MainActivity.db.mediaDao().apply {
@@ -131,12 +139,12 @@ class ListeFragment : Fragment() {
 
             Toast.makeText(
                 fragment.requireContext(),
-                "Ajout réussi ! 🧸",
+                getString(R.string.succes_ajout),
                 Toast.LENGTH_SHORT
             ).show()
         }
 
-        alertDialogBuilder.setNegativeButton("Annuler ❌") { dialog, _ ->
+        alertDialogBuilder.setNegativeButton(getString(R.string.btn_6)) { dialog, _ ->
             dialog.dismiss()
         }
 

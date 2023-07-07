@@ -18,4 +18,6 @@
     <dimen name="espacement_titre_modal">40dp</dimen>
     <dimen name="espacement_spinner_modal">30dp</dimen>
     <dimen name="espacement_button_modal">17dp</dimen>
+
+    <dimen name="taille_ref_detail">40dp</dimen>
 </resources>

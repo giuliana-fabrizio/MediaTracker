@@ -1,6 +1,5 @@
 package com.example.mediatracker
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,37 +23,29 @@ class AccueilAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-
-        val layoutInflater =
-            fragment.context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
+        val layoutInflater = LayoutInflater.from(container.context)
+        val itemView = layoutInflater.inflate(R.layout.item_accueil, container, false)
         val media = medias[position]
-        val itemView: View = layoutInflater.inflate(R.layout.item_accueil, container, false)
         val imageUrl = media.second
 
-        if (imageUrl.length > 0) {
+        if (imageUrl.isNotEmpty()) {
             val imageView: ImageView = itemView.findViewById(R.id.imageView)
             Picasso.get().load(imageUrl).into(imageView)
             container.addView(itemView)
 
-            if (position == 0) {
-                imageView.setOnClickListener {
-                    Navigation.findNavController(fragment.view!!).navigate(
-                        R.id.id_action_accueil_liste,
-                        bundleOf( "media" to media.first)
-                    )
-                }
-            } else {
-                imageView.setOnClickListener {
-                    Navigation.findNavController(fragment.view!!).navigate(
-                        R.id.id_action_accueil_detail,
-                        bundleOf(
-                            "id_media" to media.first.toString()
-                        )
-                    )
-                }
+            val params = listOf(
+                Pair(R.id.id_action_accueil_liste, "media"),
+                Pair(R.id.id_action_accueil_detail, "id_media")
+            )
+
+            imageView.setOnClickListener {
+                Navigation.findNavController(fragment.view!!).navigate(
+                    if (position == 0) params[0].first else params[1].first,
+                    bundleOf((if (position == 0) params[0].second else params[1].second) to media.first)
+                )
             }
         }
+
         return itemView
     }
 
