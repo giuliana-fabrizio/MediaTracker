@@ -9,23 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.example.mediatracker.bdd.MediaDetail
 import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment() {
     private var detail: MediaDetail? = null
-    private lateinit var imageView: ImageView
-    private lateinit var photoEditText: EditText
+
     private lateinit var nomEditText: EditText
+
     private lateinit var descriptionEditText: EditText
-    private lateinit var lienButton: Button
+    private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var labelLienTextView: TextView
     private lateinit var lienEditText: EditText
+    private lateinit var lienButton: Button
+    private lateinit var imageView: ImageView
+    private lateinit var imageEditText: EditText
     private lateinit var spinner: Spinner
+    private lateinit var dateSelectionneeTextView: TextView
     private lateinit var saison: EditText
     private lateinit var episode: EditText
+
+    private lateinit var btnDate: Button
+    private lateinit var calendarView: CalendarView
+
+    private lateinit var constraintLayoutBtns: ConstraintLayout
     private lateinit var suppButton: Button
     private lateinit var modifierButton: Button
 
@@ -39,53 +47,75 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
         val args = arguments?.getString("id_media")
+        if (args != null) detail = MainActivity.db.mediaDao().getOne(args)
+        else return null
 
-        if (args != null) {
-            detail = MainActivity.db.mediaDao().getOne(args)
-        } else {
-            return null
-        }
+        initValues(view)
+        setEditable(false)
+        initView()
+        listener()
+
+        return view
+    }
+
+    private fun initValues(view: View) {
+        nomEditText = view.findViewById(R.id.id_ajout_nom)
+
+        constraintLayout = view.findViewById(R.id.id_constraint_layout)
+        descriptionEditText = view.findViewById(R.id.id_ajout_description)
+
+        labelLienTextView = view.findViewById(R.id.id_label_lien)
+        lienEditText = view.findViewById(R.id.id_ajout_lien)
+        lienButton = view.findViewById(R.id.id_detail_btn_lien)
 
         imageView = view.findViewById(R.id.id_detail_img)
-        photoEditText = view.findViewById(R.id.id_detail_photo)
-        nomEditText = view.findViewById(R.id.id_detail_nom)
-        descriptionEditText = view.findViewById(R.id.id_detail_description)
-        lienButton = view.findViewById(R.id.id_detail_btn_lien)
-        lienEditText = view.findViewById(R.id.id_detail_lien)
-        spinner = view.findViewById(R.id.id_detail_spinner)
-        saison = view.findViewById(R.id.id_detail_saison)
-        episode = view.findViewById(R.id.id_detail_episode)
-        suppButton = view.findViewById(R.id.id_detail_btn_supp)
-        modifierButton = view.findViewById(R.id.id_detail_btn_modifier)
+        imageEditText = view.findViewById(R.id.id_ajout_image)
+
+        spinner = view.findViewById(R.id.id_liste_statut)
+
+        dateSelectionneeTextView = view.findViewById(R.id.id_date_selectionnee)
 
         if (detail?.media_categorie == getString(R.string.onglet_2)) {
             val constraintLayout: ConstraintLayout =
                 view.findViewById(R.id.id_constraint_layout_saison_episode)
             constraintLayout.visibility = View.GONE
         }
+        saison = view.findViewById(R.id.id_ajout_saison)
+        episode = view.findViewById(R.id.id_ajout_episode)
 
-        statuts = MainActivity.db.statutDao().getAllStatut().sortedByDescending { statut ->
-            statut.contains(detail?.media_statut ?: "")
-        }
+        btnDate = view.findViewById(R.id.id_btn_ajout_date)
+        calendarView = view.findViewById(R.id.id_ajout_date)
 
-        editable(false)
-        init()
-        listener(view)
-
-        return view
+        constraintLayoutBtns = view.findViewById(R.id.id_constraint_layout_btns)
+        suppButton = view.findViewById(R.id.id_detail_btn_1)
+        modifierButton = view.findViewById(R.id.id_detail_btn_2)
     }
 
-    private fun init() {
+    private fun setEditable(bool: Boolean) {
+        val views = arrayOf(
+            nomEditText,
+            descriptionEditText,
+            imageEditText,
+            spinner,
+            saison,
+            episode
+        )
+        for (view in views) view.isEnabled = bool
+    }
+
+    private fun initView() {
         detail?.let { mediaDetail ->
             if (mediaDetail.image.isNotEmpty()) {
                 Picasso.get().load(mediaDetail.image).into(imageView)
             }
-            photoEditText.setText(mediaDetail.image)
             nomEditText.setText(mediaDetail.nom)
             descriptionEditText.setText(mediaDetail.description)
-            lienButton.visibility = View.VISIBLE
-            lienEditText.visibility = View.INVISIBLE
+            lienEditText.setText(mediaDetail.lien)
+            imageEditText.setText(mediaDetail.image)
 
+            statuts = MainActivity.db.statutDao().getAllStatut().sortedByDescending { statut ->
+                statut.contains(mediaDetail.media_statut)
+            }
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -96,39 +126,43 @@ class DetailFragment : Fragment() {
 
             saison.setText(mediaDetail.num_saison.toString())
             episode.setText(mediaDetail.num_episode.toString())
-            suppButton.text = getString(R.string.btn_3)
-            modifierButton.text = getString(R.string.btn_4)
         }
+        setVisibility(View.INVISIBLE)
+
+        suppButton.text = getString(R.string.btn_3)
+        modifierButton.text = getString(R.string.btn_4)
     }
 
-    private fun editable(bool: Boolean) {
-        val views = arrayOf(
-            photoEditText,
-            nomEditText,
-            descriptionEditText,
-            spinner,
-            saison,
-            episode
-        )
-
-        for (view in views) {
-            view.isEnabled = bool
-        }
+    private fun setVisibility(visibility: Int) {
+        labelLienTextView.visibility = visibility
+        lienEditText.visibility = visibility
+        lienButton.visibility =
+            if (lienEditText.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
+        imageEditText.visibility = visibility
+        imageView.visibility = lienButton.visibility
+        calendarView.visibility =
+            if (visibility == View.GONE) View.VISIBLE else View.GONE
+        btnDate.visibility =
+            if (
+                imageEditText.visibility == View.VISIBLE ||
+                calendarView.visibility == View.VISIBLE
+            )
+                View.VISIBLE else View.GONE
+        constraintLayout.visibility =
+            if (calendarView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        constraintLayoutBtns.visibility = constraintLayout.visibility
     }
 
-    private fun listener(view: View) {
+    private fun listener() {
         lienButton.setOnClickListener {
             detail?.let { mediaDetail ->
-                if (mediaDetail.lien.isNotEmpty()) {
+                try {
                     val url = mediaDetail.lien
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(intent)
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.erreur_redirection_web),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                } catch (e: Exception) {
+                    toastInfo(getString(R.string.erreur_redirection_web))
+
                 }
             }
         }
@@ -146,48 +180,71 @@ class DetailFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
+        btnDate.setOnClickListener {
+            setVisibility(if (calendarView.visibility == View.GONE) View.GONE else View.VISIBLE)
+        }
+
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val formattedDate =
+                "Date de sortie : " + String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+            dateSelectionneeTextView.text = formattedDate
+            setVisibility(View.VISIBLE)
+        }
+
         suppButton.setOnClickListener {
             if (!modifierButton.text.contains(getString(R.string.btn_4))) {
-                init()
-                editable(false)
+                initView()
+                setEditable(false)
             } else {
                 detail?.let { mediaDetail ->
                     MainActivity.db.mediaDao().deleteByName(mediaDetail.nom)
-                    Toast.makeText(requireContext(), getString(R.string.succes_suppression), Toast.LENGTH_SHORT).show()
                 }
-                // Utiliser la méthode popBackStack pour revenir à l'écran précédent (la liste)
                 Navigation.findNavController(requireView()).popBackStack()
+                toastInfo(getString(R.string.succes_suppression))
             }
         }
 
         modifierButton.setOnClickListener {
             val isModifierText = modifierButton.text.contains(getString(R.string.btn_4))
-            editable(isModifierText)
+            setEditable(isModifierText)
 
             if (isModifierText) {
                 modifierButton.text = getString(R.string.btn_5)
                 suppButton.text = getString(R.string.btn_6)
-                lienButton.visibility = View.INVISIBLE
-                lienEditText.visibility = View.VISIBLE
-                detail?.let { mediaDetail ->
-                    lienEditText.setText(mediaDetail.lien)
-                }
+                setVisibility(View.VISIBLE)
             } else {
-                detail?.let { mediaDetail ->
-                    MainActivity.db.mediaDao().updateByName(
-                        nom = nomEditText.text.toString(),
-                        description = descriptionEditText.text.toString(),
-                        image = photoEditText.text.toString(),
-                        lien = lienEditText.text.toString(),
-                        media_statut = selectedText,
-                        num_saison = saison.text.toString().toInt(),
-                        num_episode = episode.text.toString().toInt(),
-                        ancienNom = mediaDetail.nom
-                    )
-                    detail = MainActivity.db.mediaDao().getOne(nomEditText.text.toString())
-                    init()
-                }
+                val num_saison = saison.text.toString().toIntOrNull()
+                val num_episode = episode.text.toString().toIntOrNull()
+                var message = ""
+
+                if (num_saison != null && num_episode != null) {
+                    try {
+                        detail?.let { mediaDetail ->
+                            MainActivity.db.mediaDao().updateByName(
+                                nom = nomEditText.text.toString(),
+                                description = descriptionEditText.text.toString(),
+                                image = imageEditText.text.toString(),
+                                lien = lienEditText.text.toString(),
+                                media_statut = selectedText,
+                                num_saison = num_saison,
+                                num_episode = num_episode,
+                                ancienNom = mediaDetail.nom
+                            )
+                        }
+                        detail = MainActivity.db.mediaDao().getOne(nomEditText.text.toString())
+                        message = getString(R.string.succes_operation)
+                    } catch (e: Exception) {
+                        message = getString(R.string.erreur_operation)
+                    }
+                } else message = getString(R.string.erreur_nombre)
+
+                initView()
+                toastInfo(message)
             }
         }
+    }
+
+    private fun toastInfo(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

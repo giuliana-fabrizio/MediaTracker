@@ -63,13 +63,11 @@ class ListeFragment : Fragment() {
     private fun modal_ajouter() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
-        val modalAjout = inflater.inflate(R.layout.modal_ajout, null)
+        val modalAjout = inflater.inflate(R.layout.fragment_detail, null)
         alertDialogBuilder.setView(modalAjout)
 
         val constraintLayout: ConstraintLayout =
-            modalAjout.findViewById(R.id.id_ConstraintLayout_modal)
-        val constraintLayoutSaisonEpisode: ConstraintLayout =
-            modalAjout.findViewById(R.id.id_constraint_layout_saison_episode_modal)
+            modalAjout.findViewById(R.id.id_constraint_layout)
         val nomEditText: EditText = modalAjout.findViewById(R.id.id_ajout_nom)
         val descriptionEditText: EditText = modalAjout.findViewById(R.id.id_ajout_description)
         val imageEditText: EditText = modalAjout.findViewById(R.id.id_ajout_image)
@@ -84,8 +82,11 @@ class ListeFragment : Fragment() {
         var selectedText = ""
         val statuts = MainActivity.db.statutDao().getAllStatut()
 
-        if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2))
+        if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2)) {
+            val constraintLayoutSaisonEpisode: ConstraintLayout =
+                modalAjout.findViewById(R.id.id_constraint_layout_saison_episode)
             constraintLayoutSaisonEpisode.visibility = View.GONE
+        }
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -141,13 +142,13 @@ class ListeFragment : Fragment() {
 
                 Toast.makeText(
                     fragment.requireContext(),
-                    getString(R.string.succes_ajout),
+                    getString(R.string.succes_operation),
                     Toast.LENGTH_SHORT
                 ).show()
             } catch (e: Exception) {
                 Toast.makeText(
                     fragment.requireContext(),
-                    getString(R.string.erreur_ajout),
+                    getString(R.string.erreur_operation),
                     Toast.LENGTH_SHORT
                 ).show()
             }

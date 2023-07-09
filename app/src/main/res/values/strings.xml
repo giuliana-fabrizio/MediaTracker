@@ -33,19 +33,20 @@
     <string name="btn_6">Annuler ❌</string>
 
     <!-- =============================================================================================== statut -->
-    <string name="label_ajout_nom">Nom du média 📰</string>
+    <string name="label_ajout_nom">Nom du média* 📰</string>
     <string name="label_description">Description 🖋</string>
     <string name="label_image">Lien de l\'image 🖼️</string>
     <string name="label_lien_web">Lien du média 🎥</string>
-    <string name="label_statut">Statut du média 🧮</string>
+    <string name="label_statut">Statut du média* 🧮</string>
     <string name="label_saison">Saison 🛋️</string>
     <string name="label_episode">Épisode 📺</string>
-    <string name="label_date_sortie">Date de sortie 📆</string>
+    <string name="label_date_sortie">Modifier la date de sortie 📆</string>
 
-    <string name="succes_ajout">Ajout réussi ! 🧸</string>
+    <string name="succes_operation">Action réussie ! 🧸</string>
     <string name="succes_suppression">Media supprimé ✅</string>
 
-    <string name="erreur_ajout">Ajout impossible, média déjà présent 🙁</string>
-    <string name="erreur_redirection_web">Pas de lien renseigné 🥸</string>
+    <string name="erreur_operation">Action impossible, média déjà présent 🙁</string>
+    <string name="erreur_nombre">Nombre de saison ou d\'épisode trop grand 🥴</string>
+    <string name="erreur_redirection_web">Mauvais lien renseigné 🥸</string>
 
 </resources>

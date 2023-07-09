@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -58,15 +59,18 @@ class ListeAdaptateur(
                 .navigate(R.id.id_action_liste_detail, bundle)
         }
 
-        if (media.lien.isNotEmpty()) {
-            holder.btn_site_web.visibility = View.VISIBLE
-            holder.btn_site_web.setOnClickListener {
+        holder.btn_site_web.setOnClickListener {
+            try {
                 val url = media.lien
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 fragment.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    fragment.requireContext(),
+                    fragment.getString(R.string.erreur_redirection_web),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        } else {
-            holder.btn_site_web.visibility = View.INVISIBLE
         }
     }
 }
