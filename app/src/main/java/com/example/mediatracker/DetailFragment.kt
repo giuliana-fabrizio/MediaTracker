@@ -270,13 +270,12 @@ class DetailFragment : Fragment() {
                 val num_episode = episode.text.toString().toIntOrNull()
                 var message = ""
 
-                if (nom.isBlank()) message = getString(R.string.erreur_nom)
-                else if (num_saison == null || num_episode == null) message =
-                    getString(R.string.erreur_nombre)
-                else {
-
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO) {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        if (nom.isBlank()) message = getString(R.string.erreur_nom)
+                        else if (num_saison == null || num_episode == null)
+                            message = getString(R.string.erreur_nombre)
+                        else {
                             try {
                                 detail?.let { mediaDetail ->
                                     MainActivity.db.mediaDao().updateByName(
@@ -299,9 +298,9 @@ class DetailFragment : Fragment() {
                                 message = getString(R.string.erreur_operation)
                             }
                         }
-                        initView()
-                        toastInfo(message)
                     }
+                    initView()
+                    toastInfo(message)
                 }
             }
         }
