@@ -23,7 +23,8 @@ data class Media(
     @ColumnInfo(name = "media_categorie") val media_categorie: String,
     @ColumnInfo(name = "media_statut") val media_statut: String,
     @ColumnInfo(name = "num_saison") val num_saison: Int?,
-    @ColumnInfo(name = "num_episode") val num_episode: Int?
+    @ColumnInfo(name = "num_episode") val num_episode: Int?,
+    @ColumnInfo(name = "date_sortie") val date_sortie: String?
 )
 
 data class MediaDetail(
@@ -35,7 +36,8 @@ data class MediaDetail(
     val media_statut: String,
     val libelle_statut: String,
     val num_saison: Int,
-    val num_episode: Int
+    val num_episode: Int,
+    val date_sortie: String
 )
 
 @Dao
@@ -66,7 +68,8 @@ interface MediaDao {
                 "lien = :lien, " +
                 "media_statut = :media_statut, " +
                 "num_saison = :num_saison, " +
-                "num_episode = :num_episode " +
+                "num_episode = :num_episode, " +
+                "date_sortie = :date_sortie " +
                 "WHERE nom LIKE :ancienNom "
     )
     fun updateByName(
@@ -77,6 +80,7 @@ interface MediaDao {
         media_statut: String,
         num_saison: Int?,
         num_episode: Int?,
+        date_sortie: String?,
         ancienNom: String
     )
 

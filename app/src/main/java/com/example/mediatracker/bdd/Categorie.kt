@@ -12,11 +12,6 @@ data class Categorie(
 @Dao
 interface CategorieDao {
 
-    @Query(
-        "SELECT * FROM categorie"
-    )
-    fun getAll(): List<Categorie>
-
     @Insert
     fun insert(categorie: Categorie)
 

@@ -3,23 +3,29 @@ package com.example.mediatracker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.mediatracker.bdd.MediaDetail
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailFragment : Fragment() {
     private var detail: MediaDetail? = null
 
     private lateinit var nomEditText: EditText
 
-    private lateinit var descriptionEditText: EditText
     private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var labelDescription: TextView
+    private lateinit var descriptionEditText: EditText
     private lateinit var labelLienTextView: TextView
     private lateinit var lienEditText: EditText
     private lateinit var lienButton: Button
@@ -39,6 +45,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var selectedText: String
     private lateinit var statuts: List<String>
+    private var dateSortie = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,13 +54,15 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
         val args = arguments?.getString("id_media")
-        if (args != null) detail = MainActivity.db.mediaDao().getOne(args)
-        else return null
-
-        initValues(view)
-        setEditable(false)
-        initView()
-        listener()
+        if (args != null) {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) { detail = MainActivity.db.mediaDao().getOne(args) }
+                initValues(view)
+                setEditable(false)
+                initView()
+                listener()
+            }
+        } else return null
 
         return view
     }
@@ -62,6 +71,7 @@ class DetailFragment : Fragment() {
         nomEditText = view.findViewById(R.id.id_ajout_nom)
 
         constraintLayout = view.findViewById(R.id.id_constraint_layout)
+        labelDescription = view.findViewById(R.id.id_label_description)
         descriptionEditText = view.findViewById(R.id.id_ajout_description)
 
         labelLienTextView = view.findViewById(R.id.id_label_lien)
@@ -109,31 +119,41 @@ class DetailFragment : Fragment() {
                 Picasso.get().load(mediaDetail.image).into(imageView)
             }
             nomEditText.setText(mediaDetail.nom)
+            labelDescription.setText(getString(R.string.label_modal_description))
             descriptionEditText.setText(mediaDetail.description)
             lienEditText.setText(mediaDetail.lien)
             imageEditText.setText(mediaDetail.image)
 
-            statuts = MainActivity.db.statutDao().getAllStatut().sortedByDescending { statut ->
-                statut.contains(mediaDetail.media_statut)
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    statuts =
+                        MainActivity.db.statutDao().getAllStatut().sortedByDescending { statut ->
+                            statut.contains(mediaDetail.media_statut)
+                        }
+                }
+                val adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    statuts
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = adapter
             }
-            val adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                statuts
-            )
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+
+            dateSelectionneeTextView.setText(getString(R.string.date_sortie) + " " + mediaDetail.date_sortie)
 
             saison.setText(mediaDetail.num_saison.toString())
             episode.setText(mediaDetail.num_episode.toString())
         }
         setVisibility(View.INVISIBLE)
 
-        suppButton.text = getString(R.string.btn_3)
-        modifierButton.text = getString(R.string.btn_4)
+        suppButton.setText(getString(R.string.btn_3))
+        modifierButton.setText(getString(R.string.btn_4))
     }
 
     private fun setVisibility(visibility: Int) {
+        descriptionEditText.visibility =
+            if (visibility == View.INVISIBLE) View.GONE else View.VISIBLE
         labelLienTextView.visibility = visibility
         lienEditText.visibility = visibility
         lienButton.visibility =
@@ -154,6 +174,29 @@ class DetailFragment : Fragment() {
     }
 
     private fun listener() {
+        labelDescription.setOnClickListener {
+            val alertDialogBuilder =
+                androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            val inflater = LayoutInflater.from(requireContext())
+            val modalDescription = inflater.inflate(R.layout.modal_description, null)
+            alertDialogBuilder.setView(modalDescription)
+
+            alertDialogBuilder.setTitle(R.string.label_description)
+
+            val textView: TextView =
+                modalDescription.findViewById(R.id.id_textview_description_detail)
+            detail?.let { mediaDetail ->
+                textView.setText(mediaDetail.description)
+            }
+
+            alertDialogBuilder.setNegativeButton("Fermer") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val modal = alertDialogBuilder.create()
+            modal.show()
+        }
+
         lienButton.setOnClickListener {
             detail?.let { mediaDetail ->
                 try {
@@ -162,7 +205,6 @@ class DetailFragment : Fragment() {
                     startActivity(intent)
                 } catch (e: Exception) {
                     toastInfo(getString(R.string.erreur_redirection_web))
-
                 }
             }
         }
@@ -185,9 +227,14 @@ class DetailFragment : Fragment() {
         }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val formattedDate =
-                "Date de sortie : " + String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
-            dateSelectionneeTextView.text = formattedDate
+            dateSortie =
+                String.format(
+                    "%02d/%02d/%04d",
+                    dayOfMonth,
+                    month + 1,
+                    year
+                )
+            dateSelectionneeTextView.setText(getString(R.string.date_sortie) + " " + dateSortie)
             setVisibility(View.VISIBLE)
         }
 
@@ -196,8 +243,12 @@ class DetailFragment : Fragment() {
                 initView()
                 setEditable(false)
             } else {
-                detail?.let { mediaDetail ->
-                    MainActivity.db.mediaDao().deleteByName(mediaDetail.nom)
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        detail?.let { mediaDetail ->
+                            MainActivity.db.mediaDao().deleteByName(mediaDetail.nom)
+                        }
+                    }
                 }
                 Navigation.findNavController(requireView()).popBackStack()
                 toastInfo(getString(R.string.succes_suppression))
@@ -209,37 +260,49 @@ class DetailFragment : Fragment() {
             setEditable(isModifierText)
 
             if (isModifierText) {
-                modifierButton.text = getString(R.string.btn_5)
-                suppButton.text = getString(R.string.btn_6)
+                labelDescription.setText(getString(R.string.label_description))
+                modifierButton.setText(getString(R.string.btn_5))
+                suppButton.setText(getString(R.string.btn_6))
                 setVisibility(View.VISIBLE)
             } else {
+                val nom = nomEditText.text.toString()
                 val num_saison = saison.text.toString().toIntOrNull()
                 val num_episode = episode.text.toString().toIntOrNull()
                 var message = ""
 
-                if (num_saison != null && num_episode != null) {
-                    try {
-                        detail?.let { mediaDetail ->
-                            MainActivity.db.mediaDao().updateByName(
-                                nom = nomEditText.text.toString(),
-                                description = descriptionEditText.text.toString(),
-                                image = imageEditText.text.toString(),
-                                lien = lienEditText.text.toString(),
-                                media_statut = selectedText,
-                                num_saison = num_saison,
-                                num_episode = num_episode,
-                                ancienNom = mediaDetail.nom
-                            )
-                        }
-                        detail = MainActivity.db.mediaDao().getOne(nomEditText.text.toString())
-                        message = getString(R.string.succes_operation)
-                    } catch (e: Exception) {
-                        message = getString(R.string.erreur_operation)
-                    }
-                } else message = getString(R.string.erreur_nombre)
+                if (nom.isBlank()) message = getString(R.string.erreur_nom)
+                else if (num_saison == null || num_episode == null) message =
+                    getString(R.string.erreur_nombre)
+                else {
 
-                initView()
-                toastInfo(message)
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                            try {
+                                detail?.let { mediaDetail ->
+                                    MainActivity.db.mediaDao().updateByName(
+                                        nom = nom,
+                                        description = descriptionEditText.text.toString(),
+                                        image = imageEditText.text.toString(),
+                                        lien = lienEditText.text.toString(),
+                                        media_statut = selectedText,
+                                        num_saison = num_saison,
+                                        num_episode = num_episode,
+                                        date_sortie = dateSortie,
+                                        ancienNom = mediaDetail.nom
+                                    )
+                                }
+                                detail =
+                                    MainActivity.db.mediaDao().getOne(nomEditText.text.toString())
+                                message = getString(R.string.succes_operation)
+                            } catch (e: Exception) {
+                                Log.i("tata", e.message.toString())
+                                message = getString(R.string.erreur_operation)
+                            }
+                        }
+                        initView()
+                        toastInfo(message)
+                    }
+                }
             }
         }
     }

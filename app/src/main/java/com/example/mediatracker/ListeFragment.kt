@@ -2,6 +2,7 @@ package com.example.mediatracker
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -11,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mediatracker.bdd.Media
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Suppress("DEPRECATION")
 class ListeFragment : Fragment() {
 
-    private var fragment = this
     private lateinit var medias: List<Media>
     private lateinit var recyclerView: RecyclerView
 
@@ -23,8 +27,6 @@ class ListeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreate(savedInstanceState)
-
         val view = inflater.inflate(R.layout.fragment_liste, container, false)
 
         val page = arguments?.getString("media")
@@ -32,66 +34,93 @@ class ListeFragment : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.title = page.toString()
 
         setHasOptionsMenu(true)
-
-        medias = MainActivity.db.mediaDao()
-            .getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.id_recyclerview_liste)
-        recyclerView.adapter = ListeAdaptateur(medias, this)
+        lifecycleScope.launch {
+            medias = withContext(Dispatchers.IO) {
+                MainActivity.db.mediaDao()
+                    .getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
+            }
+            Log.i("tata", medias.toString())
+
+            recyclerView = view.findViewById(R.id.id_recyclerview_liste)
+            recyclerView.adapter = ListeAdaptateur(medias, this@ListeFragment)
+        }
     }
 
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_liste, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.id_liste_action_1 -> modal_ajouter()
+            R.id.id_liste_action_1 -> modalAjouter()
             R.id.id_liste_action_2 -> rechercherParNom(item)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("MissingInflatedId")
-    private fun modal_ajouter() {
+    @SuppressLint("InflateParams")
+    private fun modalAjouter() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
         val modalAjout = inflater.inflate(R.layout.fragment_detail, null)
         alertDialogBuilder.setView(modalAjout)
 
-        val constraintLayout: ConstraintLayout =
-            modalAjout.findViewById(R.id.id_constraint_layout)
+        val constraintLayout: ConstraintLayout = modalAjout.findViewById(R.id.id_constraint_layout)
         val nomEditText: EditText = modalAjout.findViewById(R.id.id_ajout_nom)
         val descriptionEditText: EditText = modalAjout.findViewById(R.id.id_ajout_description)
-        val imageEditText: EditText = modalAjout.findViewById(R.id.id_ajout_image)
+
         val lienEditText: EditText = modalAjout.findViewById(R.id.id_ajout_lien)
+        val lienButton: Button = modalAjout.findViewById(R.id.id_detail_btn_lien)
+
+        val imageEditText: EditText = modalAjout.findViewById(R.id.id_ajout_image)
+        val imageView: ImageView = modalAjout.findViewById(R.id.id_detail_img)
+
         val spinnerStatut: Spinner = modalAjout.findViewById(R.id.id_liste_statut)
+
+        val constraintLayoutSaisonEpisode: ConstraintLayout =
+            modalAjout.findViewById(R.id.id_constraint_layout_saison_episode)
         val saisonEditText: EditText = modalAjout.findViewById(R.id.id_ajout_saison)
         val episodeEditText: EditText = modalAjout.findViewById(R.id.id_ajout_episode)
-        val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
+
         val dateSelectionneeTextView: TextView = modalAjout.findViewById(R.id.id_date_selectionnee)
+        val btnDate: Button = modalAjout.findViewById(R.id.id_btn_ajout_date)
         val calendarView: CalendarView = modalAjout.findViewById(R.id.id_ajout_date)
 
-        var selectedText = ""
-        val statuts = MainActivity.db.statutDao().getAllStatut()
+        val constraintLayoutBtns: ConstraintLayout =
+            modalAjout.findViewById(R.id.id_constraint_layout_btns)
 
-        if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2)) {
-            val constraintLayoutSaisonEpisode: ConstraintLayout =
-                modalAjout.findViewById(R.id.id_constraint_layout_saison_episode)
-            constraintLayoutSaisonEpisode.visibility = View.GONE
+        var selectedText = ""
+        var dateSortie = ""
+
+        constraintLayoutSaisonEpisode.visibility =
+            if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2)) View.GONE else View.VISIBLE
+
+        dateSelectionneeTextView.setText(getString(R.string.date_sortie))
+        btnDate.setText(getString(R.string.date_sortie))
+
+        var statuts = listOf("")
+        lifecycleScope.launch {
+            statuts = withContext(Dispatchers.IO) {
+                MainActivity.db.statutDao().getAllStatut()
+            }
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerStatut.adapter = adapter
         }
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statuts)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerStatut.adapter = adapter
+        lienButton.visibility = View.GONE
+        imageView.visibility = View.INVISIBLE
         calendarView.visibility = View.GONE
+        constraintLayoutBtns.visibility = View.GONE
 
         spinnerStatut.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -114,40 +143,64 @@ class ListeFragment : Fragment() {
         }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
-            dateSelectionneeTextView.text = formattedDate
+            dateSortie = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+            dateSelectionneeTextView.setText(getString(R.string.date_sortie) + " " + dateSortie)
             calendarView.visibility = View.GONE
             constraintLayout.visibility = View.VISIBLE
         }
 
         alertDialogBuilder.setPositiveButton(getString(R.string.btn_5)) { dialog, _ ->
+            val nom = nomEditText.text.toString()
+            val saison = saisonEditText.text.toString().toIntOrNull()
+            val episode = episodeEditText.text.toString().toIntOrNull()
+
+            if (nom.isBlank()) {
+                Toast.makeText(requireContext(), getString(R.string.erreur_nom), Toast.LENGTH_SHORT)
+                    .show()
+                return@setPositiveButton
+            }
+
+            if (saison == null || episode == null) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.erreur_nombre),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setPositiveButton
+            }
+
             val media = Media(
-                nom = nomEditText.text.toString(),
+                nom = nom,
                 description = descriptionEditText.text.toString(),
                 image = imageEditText.text.toString(),
                 lien = lienEditText.text.toString(),
                 media_categorie = (activity as AppCompatActivity).supportActionBar?.title.toString(),
                 media_statut = selectedText,
-                num_saison = saisonEditText.text.toString().toInt(),
-                num_episode = episodeEditText.text.toString().toInt()
+                num_saison = saison,
+                num_episode = episode,
+                date_sortie = dateSortie
             )
 
             try {
-                MainActivity.db.mediaDao().apply {
-                    insert(media)
-                    medias =
-                        getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
-                }
-                recyclerView.adapter = ListeAdaptateur(medias, fragment)
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        MainActivity.db.mediaDao().apply {
+                            insert(media)
+                            medias =
+                                getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
+                        }
+                    }
+                    recyclerView.adapter = ListeAdaptateur(medias, this@ListeFragment)
 
-                Toast.makeText(
-                    fragment.requireContext(),
-                    getString(R.string.succes_operation),
-                    Toast.LENGTH_SHORT
-                ).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.succes_operation),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } catch (e: Exception) {
                 Toast.makeText(
-                    fragment.requireContext(),
+                    requireContext(),
                     getString(R.string.erreur_operation),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -167,24 +220,21 @@ class ListeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    val filteredMedia = medias.filter { media ->
-                        media.nom.equals(query, true)
-                    }
-                    recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
-                }
+                query?.let { performSearch(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    val filteredMedia = medias.filter { media ->
-                        media.nom.contains(newText, true)
-                    }
-                    recyclerView.adapter = ListeAdaptateur(filteredMedia, fragment)
-                }
+                newText?.let { performSearch(it) }
                 return true
             }
         })
+    }
+
+    private fun performSearch(query: String) {
+        val filteredMedia = medias.filter { media ->
+            media.nom.contains(query, true)
+        }
+        recyclerView.adapter = ListeAdaptateur(filteredMedia, this)
     }
 }

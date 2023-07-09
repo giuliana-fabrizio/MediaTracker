@@ -1,29 +1,40 @@
 package com.example.mediatracker
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
 import com.example.mediatracker.bdd.*
 import com.example.mediatracker.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
+    private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
         lateinit var db: AppDatabase
+        const val PREFS_NAME = "MediaPrefs"
+        const val KEY_DATA_SAVED = "DataSaved"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initializeDatabase()
-        insertData()
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val dataSaved = sharedPreferences.getBoolean(KEY_DATA_SAVED, false)
+
+        initializeDatabase(dataSaved)
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -34,72 +45,40 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPreferences.edit().putBoolean(KEY_DATA_SAVED, true).apply()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
-    private fun initializeDatabase() {
+    private fun initializeDatabase(dataSaved: Boolean) {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "media_tracker_bdd"
-        ).allowMainThreadQueries().build()
-    }
+        ).build()
 
-    private fun insertData() {
-        db.runInTransaction {
-            db.categorieDao().apply {
-                deleteTable()
-                insert(Categorie(getString(R.string.onglet_1)))
-                insert(Categorie(getString(R.string.onglet_2)))
-                insert(Categorie(getString(R.string.onglet_3)))
-            }
+        if (!dataSaved) {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    db.categorieDao().apply {
+                        deleteTable()
+                        insert(Categorie(getString(R.string.onglet_1)))
+                        insert(Categorie(getString(R.string.onglet_2)))
+                        insert(Categorie(getString(R.string.onglet_3)))
+                    }
 
-            db.statutDao().apply {
-                deleteTable()
-                insert(Statut(getString(R.string.statut_1)))
-                insert(Statut(getString(R.string.statut_2)))
-                insert(Statut(getString(R.string.statut_3)))
-                insert(Statut(getString(R.string.statut_4)))
-            }
-
-            db.mediaDao().apply {
-                deleteTable()
-                insert(
-                    Media(
-                        "TUTU",
-                        "TUTU est partie en vacances à Turturfure",
-                        "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
-                        "https://th.bing.com/th/id/R.dcc2534c011e5ab3bd07395bc25d26f1?rik=uvGyPLj%2f6TD6CA&pid=ImgRaw&r=0",
-                        getString(R.string.onglet_1),
-                        getString(R.string.statut_1),
-                        7,
-                        5
-                    )
-                )
-                insert(
-                    Media(
-                        "TATA",
-                        "",
-                        "",
-                        "https://th.bing.com/th/id/OIP.eTzI95wbSwa2eRRkD1GNGAHaHa?pid=ImgDet&rs=1",
-                        getString(R.string.onglet_2),
-                        getString(R.string.statut_1),
-                        null,
-                        null
-                    )
-                )
-                insert(
-                    Media(
-                        "TOTO",
-                        "",
-                        "https://i.pinimg.com/originals/cd/91/7f/cd917ffff15a31088e3b385399c84e96.jpg",
-                        "",
-                        getString(R.string.onglet_1),
-                        getString(R.string.statut_4),
-                        1,
-                        5
-                    )
-                )
+                    db.statutDao().apply {
+                        deleteTable()
+                        insert(Statut(getString(R.string.statut_1)))
+                        insert(Statut(getString(R.string.statut_2)))
+                        insert(Statut(getString(R.string.statut_3)))
+                        insert(Statut(getString(R.string.statut_4)))
+                    }
+                }
+                sharedPreferences.edit().putBoolean(KEY_DATA_SAVED, true).apply()
             }
         }
     }

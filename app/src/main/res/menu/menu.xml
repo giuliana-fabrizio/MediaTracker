@@ -4,7 +4,7 @@
 
     <item
         android:id="@id/accueilFragment"
-        android:icon="@drawable/icon_animes"
+        android:icon="@drawable/icon_accueil"
         android:title="@string/page_accueil" />
 
     <item
