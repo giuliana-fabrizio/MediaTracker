@@ -39,11 +39,11 @@
     <string name="label_image">Lien de l\'image 🖼️</string>
     <string name="label_lien_web">Lien du média 🎥</string>
     <string name="label_statut">Statut du média 🧮</string>
-    <string name="date_sortie">Date de sortie </string>
+    <string name="date_sortie">Date de sortie</string>
     <string name="label_saison">Saison* 🛋️</string>
     <string name="label_episode">Épisode* 📺</string>
     <string name="label_date_sortie">Modifier la date de sortie 📆</string>
-    
+
     <string name="date_min_calendrier">07/01/2023</string>
     <string name="default_value_episode_saison">0</string>
 

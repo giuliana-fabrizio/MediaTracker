@@ -66,7 +66,7 @@ class ListeFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "SetTextI18n")
     private fun modalAjouter() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
@@ -181,8 +181,8 @@ class ListeFragment : Fragment() {
                 date_sortie = dateSortie
             )
 
-            try {
-                lifecycleScope.launch {
+            lifecycleScope.launch {
+                try {
                     withContext(Dispatchers.IO) {
                         MainActivity.db.mediaDao().apply {
                             insert(media)
@@ -197,13 +197,13 @@ class ListeFragment : Fragment() {
                         getString(R.string.succes_operation),
                         Toast.LENGTH_SHORT
                     ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.erreur_operation),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.erreur_operation),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
         }
 

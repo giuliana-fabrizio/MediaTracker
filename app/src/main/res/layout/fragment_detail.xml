@@ -145,17 +145,16 @@
                 app:layout_constraintTop_toBottomOf="@id/id_label_statut"
                 tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-
             <TextView
                 android:id="@+id/id_date_selectionnee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/espacement_element"
+                android:layout_marginEnd="@dimen/espacement"
                 android:textColor="@color/black"
                 android:textSize="@dimen/taille_text_modal"
                 app:layout_constraintBottom_toBottomOf="@id/id_detail_img"
                 app:layout_constraintEnd_toEndOf="@id/id_liste_statut"
-                app:layout_constraintStart_toStartOf="@id/id_liste_statut"
                 app:layout_constraintTop_toBottomOf="@id/id_liste_statut"
                 tools:ignore="MissingConstraints" />
 
