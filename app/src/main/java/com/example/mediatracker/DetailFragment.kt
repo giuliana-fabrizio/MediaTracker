@@ -294,7 +294,6 @@ class DetailFragment : Fragment() {
                                     MainActivity.db.mediaDao().getOne(nomEditText.text.toString())
                                 message = getString(R.string.succes_operation)
                             } catch (e: Exception) {
-                                Log.i("tata", e.message.toString())
                                 message = getString(R.string.erreur_operation)
                             }
                         }

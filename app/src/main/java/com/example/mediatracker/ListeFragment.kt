@@ -45,7 +45,6 @@ class ListeFragment : Fragment() {
                 MainActivity.db.mediaDao()
                     .getAll((activity as AppCompatActivity).supportActionBar?.title.toString())
             }
-            Log.i("tata", medias.toString())
 
             recyclerView = view.findViewById(R.id.id_recyclerview_liste)
             recyclerView.adapter = ListeAdaptateur(medias, this@ListeFragment)

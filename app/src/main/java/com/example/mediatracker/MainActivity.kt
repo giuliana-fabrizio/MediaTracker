@@ -65,27 +65,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        sharedPreferences.edit().putBoolean(KEY_DATA_SAVED, true).apply()
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
+            return true
         }
 
+        val navController = findNavController(R.id.navHostFragment)
         val currentDestination = navController.currentDestination?.id
 
-        if (currentDestination == R.id.detailFragment) {
-            navController.popBackStack()
-            return true
-        } else if (currentDestination != R.id.accueilFragment) {
-            navController.navigate(R.id.accueilFragment)
+        if (currentDestination != R.id.accueilFragment) {
+            navController.popBackStack(R.id.accueilFragment, false)
             return true
         }
 
         return NavigationUI.navigateUp(navController, drawerLayout)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPreferences.edit().putBoolean(KEY_DATA_SAVED, true).apply()
     }
 
     private fun initializeDatabase(dataSaved: Boolean) {
