@@ -46,39 +46,21 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.menuView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
-        val navView: NavigationView = findViewById(R.id.menuView)
-
-        navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.accueilFragment -> {
-                    navController.navigate(R.id.accueilFragment)
-                    true
-                }
-                R.id.animesFragment -> {
-                    navController.navigate(R.id.animesFragment)
-                    true
-                }
-                R.id.filmsFragment -> {
-                    navController.navigate(R.id.filmsFragment)
-                    true
-                }
-                R.id.seriesFragment -> {
-                    navController.navigate(R.id.seriesFragment)
-                    true
-                }
-                else -> false
-            }
-        }
+        navigation()
     }
 
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if (navController.currentDestination?.id != R.id.accueilFragment) {
+            val currentDestination = navController.currentDestination?.id
+
+            if (currentDestination == R.id.detailFragment) {
+                navController.popBackStack()
+            } else if (currentDestination != R.id.accueilFragment) {
                 navController.navigate(R.id.accueilFragment)
             } else {
-                super.onBackPressed()
+                finishAffinity()
             }
         }
     }
@@ -89,6 +71,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val currentDestination = navController.currentDestination?.id
+
+        if (currentDestination == R.id.detailFragment) {
+            navController.popBackStack()
+            return true
+        } else if (currentDestination != R.id.accueilFragment) {
+            navController.navigate(R.id.accueilFragment)
+            return true
+        }
+
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
@@ -117,6 +113,32 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 sharedPreferences.edit().putBoolean(KEY_DATA_SAVED, true).apply()
+            }
+        }
+    }
+
+    private fun navigation() {
+        val navView: NavigationView = findViewById(R.id.menuView)
+
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.accueilFragment -> {
+                    navController.navigate(R.id.accueilFragment)
+                    true
+                }
+                R.id.animesFragment -> {
+                    navController.navigate(R.id.animesFragment)
+                    true
+                }
+                R.id.filmsFragment -> {
+                    navController.navigate(R.id.filmsFragment)
+                    true
+                }
+                R.id.seriesFragment -> {
+                    navController.navigate(R.id.seriesFragment)
+                    true
+                }
+                else -> false
             }
         }
     }
