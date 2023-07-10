@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
 import com.example.mediatracker.bdd.*
 import com.example.mediatracker.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,9 +41,33 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         drawerLayout = binding.drawerLayout
-        navController = this.findNavController(R.id.navHostFragment)
+        navController = findNavController(R.id.navHostFragment)
         NavigationUI.setupWithNavController(binding.menuView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
+        val navView: NavigationView = findViewById(R.id.menuView)
+
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.accueilFragment -> {
+                    navController.navigate(R.id.accueilFragment)
+                    true
+                }
+                R.id.animesFragment -> {
+                    navController.navigate(R.id.animesFragment)
+                    true
+                }
+                R.id.filmsFragment -> {
+                    navController.navigate(R.id.filmsFragment)
+                    true
+                }
+                R.id.seriesFragment -> {
+                    navController.navigate(R.id.seriesFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onDestroy() {
