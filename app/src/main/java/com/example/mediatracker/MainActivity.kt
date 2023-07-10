@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -66,6 +67,18 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            if (navController.currentDestination?.id != R.id.accueilFragment) {
+                navController.navigate(R.id.accueilFragment)
+            } else {
+                super.onBackPressed()
             }
         }
     }
