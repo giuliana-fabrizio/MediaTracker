@@ -102,6 +102,7 @@ class ListeFragment : Fragment() {
         constraintLayoutSaisonEpisode.visibility =
             if ((activity as AppCompatActivity).supportActionBar?.title.toString() == getString(R.string.onglet_2)) View.GONE else View.VISIBLE
 
+        dateSelectionneeTextView.visibility = View.GONE
         dateSelectionneeTextView.setText(getString(R.string.date_sortie))
         btnDate.setText(getString(R.string.date_sortie))
 
@@ -144,6 +145,7 @@ class ListeFragment : Fragment() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             dateSortie = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
             dateSelectionneeTextView.setText(getString(R.string.date_sortie) + " " + dateSortie)
+            dateSelectionneeTextView.visibility = View.VISIBLE
             calendarView.visibility = View.GONE
             constraintLayout.visibility = View.VISIBLE
         }
